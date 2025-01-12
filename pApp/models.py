@@ -20,7 +20,7 @@ class order(models.Model):
     amount = models.IntegerField()
     odername = models.CharField(max_length=25)
     price = models.IntegerField()
-    total = models.IntegerField()
+    total1 = models.IntegerField()
     totalPrice = models.IntegerField()
 
 

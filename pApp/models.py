@@ -18,9 +18,9 @@ class quotation(models.Model):
     
 class order(models.Model):
     amount = models.IntegerField()
-    odername = models.CharField(max_length=25)
+    orderName = models.CharField(max_length=25)
     price = models.IntegerField()
-    total1 = models.IntegerField()
+    total = models.IntegerField()
     totalPrice = models.IntegerField()
 
 

@@ -1,6 +1,6 @@
 from django.urls import path
 from pApp import views
-from pApp.backEnd import edit, login, profile
+from pApp.backEnd import edit, form, login, profile ,signature
 urlpatterns = [
     path('',login.Login),
     path('Register', views.Register),
@@ -9,5 +9,7 @@ urlpatterns = [
     path('index',views.index),
     path('home',views.home),
     path('showProfile',profile.showProfile),
-    path('form',views.form)
+    path('form/',form.form),
+    path('signature/',signature.signature_view, name='signature'),
+    
 ]

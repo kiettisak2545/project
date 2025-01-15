@@ -14,8 +14,7 @@ class quotation(models.Model):
     name = models.CharField(max_length= 25)
     lastName = models.CharField(max_length= 25)
     address = models.CharField(max_length= 50)
-
-    
+    tel = models.CharField(max_length=10)
 class order(models.Model):
     amount = models.IntegerField()
     orderName = models.CharField(max_length=25)

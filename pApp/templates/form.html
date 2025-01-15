@@ -8,18 +8,18 @@
     <div class="row" style="width: 30rem;">
         <div class="col">
             <label for="name">ชื่อ</label>
-            <input type="text" name="name" class="form-control" value="{{user.name}}">
+            <input type="text" name="name" class="form-control" >
 
             <label for="lastName">ที่อยู่</label>
-            <input type="text" name = "address" class="form-control" value="{{user.lastName}}">
+            <input type="text" name = "address" class="form-control" >
         </div>
 
         <div class="col">
             <label for="lastName">นามสกุล</label>
-            <input type="text" name = "lastName" class="form-control" value="{{user.lastName}}">
+            <input type="text" name = "lastName" class="form-control">
 
             <label for="lastName">เบอร์โทร</label>
-            <input type="text" name = "tel" class="form-control" value="{{user.lastName}}">
+            <input type="text" name = "tel" class="form-control">
         </div>
     </div>
     
@@ -32,12 +32,12 @@
             <div class="row">
                 <div class="col">
                     <label for="item1">รายการ</label>
-                    <input type="text" name="item1" class="form-control" value="">
+                    <input type="text" name="orderName1" class="form-control" value="">
                 </div>
         
                 <div class="col">
                     <label for="quantity1">จำนวน</label>
-                    <input type="text" name="quantity1" class="form-control" value="">
+                    <input type="text" name="amount1" class="form-control" value="">
                 </div>
         
                 <div class="col">
@@ -76,12 +76,12 @@
                 newRow.innerHTML = `
                     <div class="col">
                         <label for="item${rowCount}">รายการ</label>
-                        <input type="text" name="item${rowCount}" class="form-control" value="">
+                        <input type="text" name="orderName${rowCount}" class="form-control" value="">
                     </div>
         
                     <div class="col">
                         <label for="quantity${rowCount}">จำนวน</label>
-                        <input type="text" name="quantity${rowCount}" class="form-control" value="">
+                        <input type="text" name="amount${rowCount}" class="form-control" value="">
                     </div>
         
                     <div class="col">

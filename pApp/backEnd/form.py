@@ -5,8 +5,8 @@ from pApp.models import quotation,order
 
 def form(request):
     if request.method == "POST":
-        
-        name = request.POST['nsme']
+    
+        name = request.POST['name']
         lastname = request.POST['lastName']
         address = request.POST['address']
         tel = request.POST['tel']
@@ -22,7 +22,7 @@ def form(request):
         while True:
             # ดึงข้อมูลจากฟอร์ม
             amount = request.POST.get(f"amount{row_number}") 
-            ordername = request.POST.get(f"oderName{row_number}")
+            ordername = request.POST.get(f"orderName{row_number}")
             price = request.POST.get(f"price{row_number}")
 
             # ตรวจสอบว่าแถวนี้มีข้อมูลหรือไม่
@@ -34,11 +34,14 @@ def form(request):
             order.objects.create(
                 amount = amount,
                 orderName = ordername,
-                price = price
+                price = price,
+                total = order.price,
+                totalPrice = order.total
+                
             )
             
             row_number += 1  # เพิ่มตัวเลขแถวไปเรื่อยๆ
 
-        return redirect('/order')  # เปลี่ยนไปหน้าสำเร็จ (หรือหน้าอื่นที่ต้องการ)
+        return redirect("/orders")  # เปลี่ยนไปหน้าสำเร็จ (หรือหน้าอื่นที่ต้องการ)
 
     return render(request, "form.html")

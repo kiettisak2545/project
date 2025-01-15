@@ -10,7 +10,7 @@ class user(models.Model):
 
 class quotation(models.Model):
     url = models.CharField(max_length=30)
-    date = models.DateField()
+    date = models.DateField(null=True, blank=True)
     name = models.CharField(max_length= 25)
     lastName = models.CharField(max_length= 25)
     address = models.CharField(max_length= 50)

@@ -15,44 +15,9 @@ def authenticate_by_email(email, password):
     return None
 
 
-def Login(request):
-    if request.method == "POST":
-        email = request.POST.get('email')  # รับค่าอีเมลจากฟอร์ม
-        password = request.POST.get('password')  # รับค่ารหัสผ่านจากฟอร์ม
-
-    
-        # ตรวจสอบว่าอีเมลและรหัสผ่านถูกต้องหรือไม่
-        user = authenticate_by_email(email, password)
-
-
-        if user is not None:
-            login(request, user)  # หากข้อมูลถูกต้องให้ทำการล็อกอิน
-            return redirect("/home")  # เมื่อเข้าสู่ระบบสำเร็จให้เปลี่ยนไปหน้า home หรือหน้าหลัก
-
-        else:
-            messages.error(request, email+password)  # หากไม่ถูกต้องจะแสดงข้อความผิดพลาด
-
-    return render(request, "Login.html")  # ให้แสดงฟอร์มล็อกอิน
-
-
-def Register(request):
-    if request.method == "POST":
-        email = request.POST["email"]
-        password = request.POST["password"]
-        
-        user.objects.create(
-            email = email,
-            password = password
-        )
-
-        #messages.success(request,"SaveData")
-
-        return redirect("/")
-    else:
-        return render(request,"Register.html")
 
 def ForgetPass(request):
-    return render(request,"ForgetPass.html")
+    return render(request,"auth/ForgetPass.html")
 
 def Edit(request,userId):
     if request.method == "POST":
@@ -62,7 +27,7 @@ def Edit(request,userId):
         _user.save()
 
  
-        return redirect("/showProfile")
+        return redirect("user/showProfile")
     else:
         #get edit data
         _user = user.objects.get(id=userId)
@@ -81,3 +46,10 @@ def showProfile(request):
 
 def form(request):
     return render(request,"form.html")
+
+
+
+
+#ดิ๊กเขียน
+def adminmanage(request):
+    return render(request, 'adminmanage/index.html')

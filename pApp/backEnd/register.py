@@ -16,4 +16,4 @@ def Register(request):
 
         return redirect("/")
     else:
-        return render(request,"Register.html")
+        return render(request,"auth/Register.html")

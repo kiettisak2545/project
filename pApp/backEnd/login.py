@@ -30,4 +30,4 @@ def Login(request):
         else:
             messages.error(request, email+password)  # หากไม่ถูกต้องจะแสดงข้อความผิดพลาด
 
-    return render(request, "Login.html")  # ให้แสดงฟอร์มล็อกอิน
+    return render(request, "auth/Login.html")  # ให้แสดงฟอร์มล็อกอิน

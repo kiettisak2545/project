@@ -47,4 +47,4 @@ def signature_view(request):
         else:
             return HttpResponse("Missing signature data or quotation number!")
 
-    return render(request, "signature.html", {'quotation_number': quotation_number})
+    return render(request, "signature.html", {'quotation_number': quotation_number}) 

@@ -1,6 +1,6 @@
-from pyexpat.errors import messages
-from django.contrib.auth import get_user_model
+from django.contrib.auth import get_user_model, login  # นำเข้า login ที่ถูกต้อง
 from django.shortcuts import redirect, render
+from django.contrib import messages  # สำหรับแสดงข้อความผิดพลาด
 
 
 def authenticate_by_email(email, password):
@@ -18,16 +18,13 @@ def Login(request):
         email = request.POST.get('email')  # รับค่าอีเมลจากฟอร์ม
         password = request.POST.get('password')  # รับค่ารหัสผ่านจากฟอร์ม
 
-    
         # ตรวจสอบว่าอีเมลและรหัสผ่านถูกต้องหรือไม่
         user = authenticate_by_email(email, password)
 
-
         if user is not None:
-            Login(request, user)  # หากข้อมูลถูกต้องให้ทำการล็อกอิน
-            return redirect("/home")  # เมื่อเข้าสู่ระบบสำเร็จให้เปลี่ยนไปหน้า home หรือหน้าหลัก
-
+            login(request, user)  # ใช้ฟังก์ชัน login ของ Django
+            return redirect("/adminmanage/manage")  # เมื่อเข้าสู่ระบบสำเร็จให้เปลี่ยนไปหน้า home หรือหน้าหลัก
         else:
-            messages.error(request, email+password)  # หากไม่ถูกต้องจะแสดงข้อความผิดพลาด
+            messages.error(request, "อีเมลหรือรหัสผ่านไม่ถูกต้อง")  # หากไม่ถูกต้องจะแสดงข้อความผิดพลาด
 
     return render(request, "auth/Login.html")  # ให้แสดงฟอร์มล็อกอิน

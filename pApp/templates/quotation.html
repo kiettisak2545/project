@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+    {% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quotation Detail</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .table th, .table td {
+            text-align: center;
+        }
+        .signature-img {
+            width: 150px;
+            height: auto;
+        }
+        .footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center">Quotation Detail</h1>
+        
+        <div class="row">
+            <div class="col-md-6">
+                <p><strong>Quotation Number:</strong> {{ quotation.number }}</p>
+                <p><strong>Name:</strong> {{ quotation.name }}</p>
+                <p><strong>Last Name:</strong> {{ quotation.lastName }}</p>
+                <p><strong>Address:</strong> {{ quotation.address }}</p>
+                <p><strong>Tel:</strong> {{ quotation.tel }}</p>
+                <h3><strong>Total Price of Quotation:</strong> {{ quotation.totalPrice }}</h3>
+            </div>
+        </div>
+        
+        <h2>Orders</h2>
+        <table class="table table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th>#</th>
+                    <th>Order Name</th>
+                    <th>Amount</th>
+                    <th>Price</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in orders %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ order.orderName }}</td>
+                        <td>{{ order.amount }}</td>
+                        <td>{{ order.price }}</td>
+                        <td>{{ order.total }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="footer">
+            <!-- Signature Image -->
+            <img src="{% static 'signature.png' %}" alt="Signature" class="signature-img">
+            <img src="{% static 'signatures/' %}{{ quotation.number }}.png" alt="Signature" class="signature-img">
+        </div>
+
+        <div class="col-2">
+            <a href="/signature?quotation_number={{ quotation.number }}">
+                <button class="btn btn-warning">ลงชื่อ</button>
+            </a>
+        </div>
+    </div>
+
+    <!-- Optional: Popup JavaScript if needed -->
+    <script>
+        // Your popup close functionality or other JavaScript can go here if needed
+    </script>
+</body>
+</html>

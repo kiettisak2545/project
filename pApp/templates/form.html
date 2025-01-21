@@ -1,111 +1,94 @@
-{%extends "includes/navbar.html"%}
-{%block content%}
-<form method="POST">
-    {%csrf_token%}
-    <div class="text-nowrap bd-highlight" style="width: 8rem;">
-        สร้างงาน
-    </div>
+{% extends "navbar.html" %}
+{% load static %}
+{% block content %}
+<form method="POST" id="order-form">
+    {% csrf_token %}
+    <!-- ฟอร์มข้อมูล -->
     <div class="row" style="width: 30rem;">
         <div class="col">
             <label for="name">ชื่อ</label>
-            <input type="text" name="name" class="form-control" >
+            <input type="text" name="name" id="name" class="form-control" required>
 
-            <label for="lastName">ที่อยู่</label>
-            <input type="text" name = "address" class="form-control" >
+            <label for="address">ที่อยู่</label>
+            <input type="text" name="address" id="address" class="form-control" required>
         </div>
 
         <div class="col">
             <label for="lastName">นามสกุล</label>
-            <input type="text" name = "lastName" class="form-control">
+            <input type="text" name="lastName" id="lastName" class="form-control" required>
 
-            <label for="lastName">เบอร์โทร</label>
-            <input type="text" name = "tel" class="form-control">
+            <label for="tel">เบอร์โทร</label>
+            <input type="text" name="tel" id="tel" class="form-control" required>
         </div>
     </div>
-    
-    <br>
 
-    <div class="text-nowrap bd-highlight" style="width: 30rem;">
-        ใบเสนอราคา
-        <div id="form-container">
-            <!-- แถวเริ่มต้น -->
-            <div class="row">
-                <div class="col">
-                    <label for="item1">รายการ</label>
-                    <input type="text" name="orderName1" class="form-control" value="">
-                </div>
-        
-                <div class="col">
-                    <label for="quantity1">จำนวน</label>
-                    <input type="text" name="amount1" class="form-control" value="">
-                </div>
-        
-                <div class="col">
-                    <label for="price1">ราคาต่อหน่วย</label>
-                    <input type="text" name="price1" class="form-control" value="">
-                </div>
-        
-                <div class="col">
-                    <button type="button" class="btn btn-danger remove-row" style="margin-top: 24px;">ลบ</button>
-                </div>
-            </div>
+    <!-- ฟอร์ม Order -->
+    <div id="orders">
+        <div class="order">
+            <label for="order_name">Order Name:</label>
+            <input type="text" name="order_names" required>
+
+            <label for="amount">Amount:</label>
+            <input type="number" name="amounts" required>
+
+            <label for="price">Price:</label>
+            <input type="number" name="prices" required>
+
+            <button type="button" class="btn btn-danger remove-order">ลบ</button>
         </div>
-        
-        <div>
-            <!-- ปุ่มเพิ่มแถว -->
-            <button id="add-row" type="button" class="btn btn-warning" style="margin-top: 20px;">เพิ่ม</button>
-            <input type="submit" value="บันทึก" class="btn btn-warning" style="margin-top: 20px;">
-        </div>
-        
-        
-        
-        <script>
-            // ตัวแปรสำหรับนับจำนวนแถว
-            let rowCount = 1;
-        
-            // ฟังก์ชันสำหรับเพิ่มแถวใหม่
-            document.getElementById("add-row").addEventListener("click", function () {
-                rowCount++; // เพิ่มตัวนับแถว
-        
-                // เลือก container ที่จะเพิ่มแถวใหม่
-                const formContainer = document.getElementById("form-container");
-        
-                // สร้างแถวใหม่
-                const newRow = document.createElement("div");
-                newRow.classList.add("row");
-                newRow.innerHTML = `
-                    <div class="col">
-                        <label for="item${rowCount}">รายการ</label>
-                        <input type="text" name="orderName${rowCount}" class="form-control" value="">
-                    </div>
-        
-                    <div class="col">
-                        <label for="quantity${rowCount}">จำนวน</label>
-                        <input type="text" name="amount${rowCount}" class="form-control" value="">
-                    </div>
-        
-                    <div class="col">
-                        <label for="price${rowCount}">ราคาต่อหน่วย</label>
-                        <input type="text" name="price${rowCount}" class="form-control" value="">
-                    </div>
-        
-                    <div class="col">
-                        <button type="button" class="btn btn-danger remove-row" style="margin-top: 24px;">ลบ</button>
-                    </div>
-                `;
-        
-                // เพิ่มแถวใหม่เข้าไปใน container
-                formContainer.appendChild(newRow);
-            });
-        
-            // ฟังก์ชันสำหรับลบแถว
-            document.getElementById("form-container").addEventListener("click", function (e) {
-                if (e.target && e.target.classList.contains("remove-row")) {
-                    // ลบแถวที่ปุ่ม "ลบ" อยู่ในนั้น
-                    e.target.closest(".row").remove();
-                }
-            });
-        </script>
-   
+    </div>
+
+    <!-- ปุ่มเพิ่ม Order -->
+    <button type="button" id="add-order" class="btn btn-warning">เพิ่ม Order</button>
+    <button type="submit" class="btn btn-success">สร้าง Orders</button>
 </form>
-{%endblock%}
+
+<!-- Popup -->
+{% if success %}
+<div id="popup" style="display: block; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 999; background: white; padding: 20px; border-radius: 10px; box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); width: 90%; max-width: 800px; height: 90%; max-height: 600px; overflow: hidden;">
+    <h4 style="text-align: center;">สร้างใบเสนอราคาเสร็จสิ้น</h4>
+    <iframe src="{{ quotation_url }}" style="width: 100%; height: 80%; border: none;"></iframe>
+    <br>
+    <div style="display: flex; justify-content: space-between; align-items: flex-end;">
+        <!-- รูปภาพลายเซ็น -->
+        <img src="{% static 'signature.png' %}" alt="Signature" style="width: 150px; height: auto; margin-left: 10px;">
+        <!-- ปุ่มปิด popup -->
+        <button onclick="document.getElementById('popup').style.display='none'" class="btn btn-danger" style="margin: 10px;">ปิด</button>
+    </div>
+</div>
+{% endif %}
+
+<!-- ปุ่มย้อนกลับไปหน้า Orders -->
+<a href="/adminmanage/manage/" class="btn btn-primary" style="position: fixed; bottom: 20px; right: 20px; z-index: 1000;">
+    ย้อนกลับไปหน้า Orders
+</a>
+
+<script>
+    // เพิ่มแถว Order
+    document.getElementById("add-order").addEventListener("click", function () {
+        const ordersContainer = document.getElementById("orders");
+        const newOrderDiv = document.createElement('div');
+        newOrderDiv.classList.add('order');
+        newOrderDiv.innerHTML = `
+            <label for="order_name">Order Name:</label>
+            <input type="text" name="order_names" required>
+
+            <label for="amount">Amount:</label>
+            <input type="number" name="amounts" required>
+
+            <label for="price">Price:</label>
+            <input type="number" name="prices" required>
+
+            <button type="button" class="btn btn-danger remove-order">ลบ</button>
+        `;
+        ordersContainer.appendChild(newOrderDiv);
+    });
+
+    // ลบแถว Order
+    document.getElementById("orders").addEventListener("click", function (e) {
+        if (e.target && e.target.classList.contains("remove-order")) {
+            e.target.closest(".order").remove();
+        }
+    });
+</script>
+{% endblock %}

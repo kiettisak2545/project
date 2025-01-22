@@ -1,12 +1,15 @@
 from django.urls import path
 from pApp import views
-from pApp.backEnd import  form, login, profile ,signature,register,quotation,adminmanage,edit_quotation
+from pApp.backEnd import  form, login, profile ,signature,register,quotation,adminmanage,edit_quotation,edit_user
 urlpatterns = [
     path('',login.Login),
     path('Register', register.Register),
     path('index',views.index),
     path('home',views.home),
+
     path('showProfile',profile.showProfile),
+    path('edit_user/<int:user_id>/', edit_user.edit_user, name='edit_user'),
+    
     path('form/',form.form),
     path('signature/',signature.signature_view, name='signature'),
     path('quotation/<str:number>/edit_quotation/', edit_quotation.edit_quotation, name='edit_quotation'),

@@ -1,0 +1,33 @@
+{%extends "main.html"%}
+
+{%block title%}
+    <title>Edit Page</title>
+{%endblock%} 
+
+{%block content%}
+    <form method="POST">
+        {%csrf_token%}
+         <div class="row" style="width: 30rem;">
+            <div class="col">
+                <label for="name">ชื่อ</label>
+                <input type="text" name="name" id="name" class="form-control" value="{{user.name}}">
+    
+                <label for="email">อีเมล</label>
+                <input type="text" name="email" id="email" class="form-control" value="{{user.email}}">
+
+                <label for="tel">เบอร์โทร</label>
+                <input type="text" name="tel" id="tel" class="form-control" value="{{user.tel}}">
+            </div>
+    
+            <div class="col">
+                <label for="lastName">นามสกุล</label>
+                <input type="text" name="lastName" id="lastName" class="form-control" value="{{user.lastName}} ">
+    
+                <label for="address">ที่อยู่</label>
+                <input type="text" name="address" id="address" class="form-control" value="{{user.address}} ">
+            </div>
+        </div>
+
+        <input type="submit" value="update" class="btn btn-warning">
+    </form>
+{%endblock%}

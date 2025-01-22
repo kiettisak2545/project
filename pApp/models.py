@@ -7,11 +7,14 @@ class user(models.Model):
     password = models.CharField(max_length=25) 
     name = models.CharField(max_length= 25)
     lastName = models.CharField(max_length= 25)
+    address = models.CharField(max_length=50)
+    tel = models.CharField(max_length=10)
+
 
 
 from django.db import models
 
-class quotation(models.Model):  # ชื่อ class ควรใช้ PascalCase ตามมาตรฐาน PEP8
+class quotation(models.Model):  
     number = models.CharField(max_length=10)
     url = models.CharField(max_length=255, blank=True, null=True)
     date = models.DateField(null=True, blank=True)

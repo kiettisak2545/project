@@ -1,0 +1,16 @@
+<tbody>
+    {% for quotation in quotations %}
+    <tr>
+        <td>{{ forloop.counter }}</td>
+        <td>{{ quotation.number }}</td>
+        <td>{{ quotation.name }}</td>
+        <td>{{ quotation.lastName }}</td>
+        <td>
+            <a href="/form?number={{ quotation.number }}">
+                <button class="btn btn-warning">สร้างใบโอนมัดจำ</button>
+            </a>
+        </td>
+        <td>กำลังดำเนินการ</td>
+    </tr>
+    {% endfor %}
+</tbody>

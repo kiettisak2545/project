@@ -1,6 +1,6 @@
 from django.urls import path
 from pApp import views
-from pApp.backEnd import  form, login, profile ,signature,register,quotation,adminmanage,edit_quotation,edit_user
+from pApp.backEnd import  form, login, profile ,signature,register,quotation,adminmanage,edit_quotation,edit_user,depositslipmanage,depositslip_form
 urlpatterns = [
     path('',login.Login),
     path('Register', register.Register),
@@ -18,4 +18,8 @@ urlpatterns = [
 
     #ดิ๊กเขียน
     path('adminmanage/manage/', adminmanage.adminmanage, name='quotation'),
+
+    path('depositslipmanage/<str:quotation_number>/', depositslipmanage.depositslip, name='depositslipmanage'),
+    path('depositslip/form//<str:quotation_number>/', depositslip_form.depositslip_form, name='depositslip_form'),
+
 ]

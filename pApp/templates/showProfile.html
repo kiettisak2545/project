@@ -1,4 +1,5 @@
 {% extends "navbar.html" %}
+{% load static %}
 
 {% block title %}
 <title>Profile Page</title>
@@ -27,7 +28,9 @@
         
                     <label for="address_{{ user.id }}">ที่อยู่</label>
                     <input type="text" name="address" id="address_{{ user.id }}" class="form-control" value="{{ user.address }}" disabled>
+
                 </div>
+                <img src="{% static 'signature.png' %}" alt="Signature" class="signature-img">
             </div>
 
             <div class="mt-3">

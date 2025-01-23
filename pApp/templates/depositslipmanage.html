@@ -64,22 +64,20 @@
     </style>
 </head>
 <body>
-    {% include 'includes/navbar.html' %}
 
     <div class="main-container">
-        {% include 'includes/sidebar.html' %}
 
 
         <div class="content" id="content">
             {% block content %}
             <div class="container text-center">
                 <div class="row">
-                    <h3 align="left">งานรับเหมาก่อสร้าง</h3>
+                    <h3 align="left">ใบโอนมัดจำ</h3>
                 </div>
                 <div class="row">
                     <div class="col-10"></div>
                     <div class="col-2">
-                        <a href="/form"><button class="btn btn-warning">สร้างงาน</button></a>
+                        <a href="/form?number={{ quotation.number }}"><button class="btn btn-warning">สร้างใบโอนมัดจำ</button></a>
                     </div>
                 </div>
                 <div class="row">
@@ -92,9 +90,7 @@
                                     <th>เลขที่</th>
                                     <th>ชื่อ</th>
                                     <th>นามสกุล</th>
-                                    <th>ลิ้ง</th>
                                     <th>แก้ไข</th>
-                                    <th>ใบโอนมัดจำ</th>
                                     <th>สถานะ</th>
                                 </tr>
                             </thead>
@@ -105,31 +101,7 @@
                                     <td>{{ quotation.number }}</td>
                                     <td>{{ quotation.name }}</td>
                                     <td>{{ quotation.lastName }}</td>
-                                    <td>
-                                      <div>
-                                        
-                                        <input type="text"
-                                             value="{{ request.scheme }}://{{ request.get_host }}/quotation/{{ quotation.number }}/" 
-                                             readonly 
-                                             style="width: 70%; border: none; background-color: #f9f9f9; text-align: left;">
-                                             <button class="copy-btn" 
-                                             onclick="copyToClipboard('{{ request.scheme }}://{{ request.get_host }}/quotation/{{ quotation.number }}/')">
-                                         Copy
-                                     </button>
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <a href="/quotation/{{ quotation.number }}/edit_quotation/">
-                                        <button type="button" class="btn btn-warning">แก้ไข</button>
-                                    </a>                                    
-                                  </td>
-                                  <td>
-                                    <a href="{% url 'depositslipmanage' quotation.number %}">
-                                        <button type="button" class="btn btn-success">สร้าง</button>
-                                    </a>
-                                </td>
-                                
-                                  <td>กำลังดำเนินการ</td>
+                                    <td>กำลังดำเนินการ</td>
                                 </tr>
                             {% endfor %}
                             </tbody>

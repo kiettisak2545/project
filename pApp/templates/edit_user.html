@@ -1,33 +1,138 @@
-{%extends "main.html"%}
+{% extends "main.html" %}
 
-{%block title%}
+{% block title %}
     <title>Edit Page</title>
-{%endblock%} 
+{% endblock %} 
 
-{%block content%}
-    <form method="POST">
-        {%csrf_token%}
-         <div class="row" style="width: 30rem;">
+{% block content %}
+    <form method="POST" id="edit-form">
+        {% csrf_token %}
+        <div class="row" style="width: 30rem;">
             <div class="col">
                 <label for="name">ชื่อ</label>
-                <input type="text" name="name" id="name" class="form-control" value="{{user.name}}">
+                <input type="text" name="name" id="name" class="form-control" value="{{ user.name }}">
     
                 <label for="email">อีเมล</label>
-                <input type="text" name="email" id="email" class="form-control" value="{{user.email}}">
+                <input type="text" name="email" id="email" class="form-control" value="{{ user.email }}">
 
                 <label for="tel">เบอร์โทร</label>
-                <input type="text" name="tel" id="tel" class="form-control" value="{{user.tel}}">
+                <input type="text" name="tel" id="tel" class="form-control" value="{{ user.tel }}">
             </div>
     
             <div class="col">
                 <label for="lastName">นามสกุล</label>
-                <input type="text" name="lastName" id="lastName" class="form-control" value="{{user.lastName}} ">
+                <input type="text" name="lastName" id="lastName" class="form-control" value="{{ user.lastName }}">
     
                 <label for="address">ที่อยู่</label>
-                <input type="text" name="address" id="address" class="form-control" value="{{user.address}} ">
+                <input type="text" name="address" id="address" class="form-control" value="{{ user.address }}">
             </div>
         </div>
 
-        <input type="submit" value="update" class="btn btn-warning">
+        <!-- ส่วนของการเพิ่มลายเซ็น -->
+        <div class="" style="width: 30rem;">
+            <label for="signature">ลายเซ็น</label>
+            <canvas id="signature-pad" style="border: 1px solid #ccc; width: 100%; height: 100%;"></canvas>
+            <input type="hidden" name="signature" id="signature">
+            <button type="button" class="btn btn-secondary mt-2" id="clear-signature">ล้างลายเซ็น</button>
+        </div>
+
+        <input type="submit" value="update" class="btn btn-warning mt-4">
     </form>
-{%endblock%}
+
+    <!-- JavaScript สำหรับจัดการลายเซ็น -->
+    <script>
+       // JavaScript สำหรับจัดการลายเซ็น
+        const canvas = document.getElementById('signature-pad');
+        const clearButton = document.getElementById('clear-signature');
+        const signatureInput = document.getElementById('signature');
+        const ctx = canvas.getContext('2d');
+
+        // กำหนดค่าเริ่มต้น
+        let drawing = false;
+
+        // คำนวณตำแหน่งที่ถูกต้องภายใน canvas
+        function getCanvasCoordinates(event) {
+            const rect = canvas.getBoundingClientRect(); // ดึงตำแหน่งของ canvas บนหน้าจอ
+            let x, y;
+
+            // คำนวณอัตราส่วน (scale) ของ canvas
+            const scaleX = canvas.width / rect.width;  // อัตราส่วนกว้าง
+            const scaleY = canvas.height / rect.height;  // อัตราส่วนสูง
+
+            // ตรวจสอบประเภทของ input (เมาส์หรือสัมผัส)
+            if (event.touches) {
+                // สำหรับอุปกรณ์สัมผัส
+                x = (event.touches[0].clientX - rect.left) * scaleX;
+                y = (event.touches[0].clientY - rect.top) * scaleY;
+            } else {
+                // สำหรับเมาส์
+                x = (event.clientX - rect.left) * scaleX;
+                y = (event.clientY - rect.top) * scaleY;
+            }
+
+            return { x, y };
+        }
+
+
+
+        // เริ่มวาด
+        canvas.addEventListener('mousedown', (event) => {
+            drawing = true;
+            ctx.beginPath();
+            const { x, y } = getCanvasCoordinates(event);
+            ctx.moveTo(x, y);
+        });
+
+        canvas.addEventListener('mousemove', (event) => {
+            if (!drawing) return;
+            const { x, y } = getCanvasCoordinates(event);
+            ctx.lineWidth = 2;
+            ctx.lineCap = 'round';
+            ctx.strokeStyle = 'black';
+            ctx.lineTo(x, y);
+            ctx.stroke();
+        });
+
+        // สำหรับการสัมผัสบนอุปกรณ์มือถือ
+        canvas.addEventListener('touchstart', (event) => {
+            event.preventDefault(); // ป้องกันการ scroll หน้าจอ
+            drawing = true;
+            ctx.beginPath();
+            const { x, y } = getCanvasCoordinates(event);
+            ctx.moveTo(x, y);
+        });
+
+        canvas.addEventListener('touchmove', (event) => {
+            event.preventDefault(); // ป้องกันการ scroll หน้าจอ
+            if (!drawing) return;
+            const { x, y } = getCanvasCoordinates(event);
+            ctx.lineWidth = 2;
+            ctx.lineCap = 'round';
+            ctx.strokeStyle = 'black';
+            ctx.lineTo(x, y);
+            ctx.stroke();
+        });
+
+        // หยุดวาด
+        canvas.addEventListener('mouseup', () => {
+            drawing = false;
+        });
+
+        canvas.addEventListener('touchend', () => {
+            drawing = false;
+        });
+
+        // ล้างลายเซ็น
+        clearButton.addEventListener('click', () => {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            signatureInput.value = '';
+        });
+
+        // บันทึกลายเซ็นเป็นภาพ
+        document.getElementById('edit-form').addEventListener('submit', () => {
+            const dataURL = canvas.toDataURL('image/png');
+            signatureInput.value = dataURL; // เก็บภาพลายเซ็นใน input hidden
+        });
+
+    </script>
+{% endblock %}

@@ -31,18 +31,22 @@ def form(request):
             lastName=lastname,
             address=address,
             tel=tel,
+
+            totalPrice = 0
         )
 
-        # อัปเดต URL ของ Quotation
         quotation_url = reverse('quotation', kwargs={'quotation_number': quotation_number})
-        new_quotation.url = quotation_url
-        new_quotation.save()
+        quotation_view_url = reverse('quotation_view', kwargs={'quotation_number': quotation_number})
 
+        # สมมุติว่า new_quotation คือออบเจ็กต์ของ Quotation ที่จะอัปเดต
+        new_quotation.url = quotation_url  # อัปเดต URL ของ Quotation
+        new_quotation.quotation_view_url = quotation_view_url  # อัปเดต URL สำหรับ quotation_view
+        new_quotation.save()  # บันทึกการเปลี่ยนแปลง
         # สร้าง Orders
         create_orders(request, quotation_number)
 
         # ส่ง URL ไปแสดงใน Popup
-        return render(request, "form.html", {"success": True, "quotation_url": quotation_url})
+        return render(request, "form.html", {"success": True, "quotation_view_url": quotation_view_url})
 
     return render(request, "form.html")
 
@@ -73,12 +77,12 @@ def create_orders(request, quotation_number):
                 amount=amount,
                 price=price,
                 total=total,
-                totalPrice=0,  # ตั้งค่าเริ่ม 0 ก่อน
             )
 
         # อัปเดต totalPrice ของ Quotation หลังจากสร้าง Orders ทั้งหมด
         related_quotation.totalPrice = total_price_sum
         related_quotation.save()  # บันทึกการเปลี่ยนแปลงของ quotation
+
 
         return redirect("/adminmanage/manage")  # เปลี่ยนไปหน้าคำสั่งซื้อสำเร็จ
     except quotation.DoesNotExist:

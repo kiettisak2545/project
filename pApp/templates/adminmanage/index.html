@@ -94,6 +94,7 @@
                                     <th>นามสกุล</th>
                                     <th>ลิ้ง</th>
                                     <th>แก้ไข</th>
+                                    <th>ใบเสนอราคา</th>
                                     <th>ใบโอนมัดจำ</th>
                                     <th>สถานะ</th>
                                 </tr>
@@ -120,6 +121,11 @@
                                   </td>
                                   <td>
                                     <a href="/quotation/{{ quotation.number }}/edit_quotation/">
+                                        <button type="button" class="btn btn-warning">แก้ไข</button>
+                                    </a>                                    
+                                  </td>
+                                  <td>
+                                    <a href="/quotation_view/{{ quotation.number }}/">
                                         <button type="button" class="btn btn-warning">แก้ไข</button>
                                     </a>                                    
                                   </td>

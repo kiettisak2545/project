@@ -1,16 +1,38 @@
-<tbody>
-    {% for quotation in quotations %}
-    <tr>
-        <td>{{ forloop.counter }}</td>
-        <td>{{ quotation.number }}</td>
-        <td>{{ quotation.name }}</td>
-        <td>{{ quotation.lastName }}</td>
-        <td>
-            <a href="/form?number={{ quotation.number }}">
-                <button class="btn btn-warning">สร้างใบโอนมัดจำ</button>
-            </a>
-        </td>
-        <td>กำลังดำเนินการ</td>
-    </tr>
-    {% endfor %}
-</tbody>
+
+{% load static %}
+<form method="POST" action="{% url 'depositslip_form' %}">
+    {% csrf_token %}
+    <div style="width: 30rem;">
+        <div>
+            <label for="depositslip_number">เลขที่</label> ต้องแก้รูปแบบ
+            <input type="text" name="depositslip_number" id="depositslip_number" class="form-control" required>
+
+            <label for="depositslip_date">วันที่</label>
+            <input type="date" name="depositslip_date" id="depositslip_date" class="form-control" required>
+        </div>
+
+        <div>
+            <label for="deposit_total">รวม</label>
+            <input type="text" name="deposit_total" id="deposit_total" class="form-control" required>
+
+            <label for="deposit_vat">ภาษีมูลค่าเพิ่ม</label>
+            <input type="text" name="deposit_vat" id="deposit_vat" class="form-control" required>
+
+            <label for="deposit_totalprice">รวมเงินทั้งหมด</label>
+            <input type="text" name="deposit_totalprice" id="deposit_totalprice" class="form-control" required>
+
+            <label for="deposit_totalpriceTH">จำนวนเงินทั้งหมดเลขไทย</label>
+            <input type="text" name="deposit_totalpriceTH" id="deposit_totalpriceTH" class="form-control" required>
+        </div>
+
+        <div>
+            <label for="deposit_ordername[]">รายการสินค้า</label>
+            <input type="text" name="deposit_ordername" id="deposit_ordername" class="form-control" required>
+
+            <label for="deposit_price[]">ราคา</label>
+            <input type="text" name="deposit_price" id="deposit_price" class="form-control" required>
+        </div>
+
+        <button type="submit" class="btn btn-primary">บันทึก</button>
+    </div>
+</form>

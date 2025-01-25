@@ -77,7 +77,7 @@
                 <div class="row">
                     <div class="col-10"></div>
                     <div class="col-2">
-                        <a href="/form?number={{ quotation.number }}"><button class="btn btn-warning">สร้างใบโอนมัดจำ</button></a>
+                        <a href="/form?number={{ quotation.number }}"><button class="btn btn-warning">เพิ่ม</button></a>
                     </div>
                 </div>
                 <div class="row">
@@ -95,10 +95,10 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                {% for quotation in quotations %}
+                                {% for depositslip in depositslip %}
                                 <tr>
                                     <td>{{ forloop.counter }}</td>
-                                    <td>{{ quotation.number }}</td>
+                                    <td>{{ depositslip.number }}</td>
                                     <td>{{ quotation.name }}</td>
                                     <td>{{ quotation.lastName }}</td>
                                     <td>กำลังดำเนินการ</td>

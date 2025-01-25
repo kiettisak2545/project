@@ -1,86 +1,80 @@
 <!DOCTYPE html>
 <html lang="en">
-    {% load static %}
+{% load static %}
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quotation Detail</title>
+    <title>Quotation & Deposit Slip</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 20px;
         }
-        .table th, .table td {
-            text-align: center;
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
         }
         .signature-img {
             width: 150px;
             height: auto;
         }
-        .footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
-            margin-top: 20px;
-        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1 class="text-center">Quotation Detail</h1>
-        
-        <div class="row">
-            <div class="col-md-6">
-                <p><strong>Quotation Number:</strong> {{ quotation.number }}</p>
-                <p><strong>Name:</strong> {{ quotation.name }}</p>
-                <p><strong>Last Name:</strong> {{ quotation.lastName }}</p>
-                <p><strong>Address:</strong> {{ quotation.address }}</p>
-                <p><strong>Tel:</strong> {{ quotation.tel }}</p>
-                <h3><strong>Total Price of Quotation:</strong> {{ quotation.totalPrice }}</h3>
+        <h1 class="text-center">Quotation & Deposit Slip</h1>
+
+        <!-- Task State (Hidden, used by JS) -->
+        <div id="taskState" style="display:none;">{{ task_state }}</div>
+
+        <!-- Tab Content -->
+        <div class="tab-content">
+            <!-- Quotation Section -->
+            <div id="quotation" class="tab-content">
+                {% include 'quotation_view.html' %}
+                <h1 class="text-center">Quotation & Deposit Slip</h1>
+            </div>
+
+            <!-- Deposit Slip Section -->
+            <div id="depositslip" class="tab-content">
+                <!--{% include 'depositslip_view.html' %}-->
             </div>
         </div>
-        
-        <h2>Orders</h2>
-        <table class="table table-bordered">
-            <thead class="thead-dark">
-                <tr>
-                    <th>#</th>
-                    <th>Order Name</th>
-                    <th>Amount</th>
-                    <th>Price</th>
-                    <th>Total</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for order in orders %}
-                    <tr>
-                        <td>{{ forloop.counter }}</td>
-                        <td>{{ order.orderName }}</td>
-                        <td>{{ order.amount }}</td>
-                        <td>{{ order.price }}</td>
-                        <td>{{ order.total }}</td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
 
-        <div class="footer">
-            <!-- Signature Image -->
-            <img src="{% static 'signature.png' %}" alt="Signature" class="signature-img">
-            <img src="{% static 'signatures/' %}{{ quotation.number }}.png" alt="Signature" class="signature-img">
-        </div>
-
-        <div class="col-2">
-            <a href="/signature?quotation_number={{ quotation.number }}">
-                <button class="btn btn-warning">ลงชื่อ</button>
-            </a>
-        </div>
     </div>
 
-    <!-- Optional: Popup JavaScript if needed -->
     <script>
-        // Your popup close functionality or other JavaScript can go here if needed
+        // Get the task state from the hidden div
+        var taskState = document.getElementById('taskState').textContent;
+        console.log(taskState); // ตรวจสอบค่าของ taskState ในคอนโซล
+    
+        // Function to show the correct tab based on taskState
+        function showState(state) {
+            // Hide all sections first
+            document.querySelectorAll('.tab-content').forEach(function(tab) {
+                tab.classList.remove('active');
+            });
+    
+            // Show the corresponding section based on taskState
+            if (state === 'quotation') {
+                document.getElementById('quotation').classList.add('active');
+                document.getElementById('depositslip').classList.remove('active');
+            } else if (state === 'depositslip') {
+                document.getElementById('depositslip').classList.add('active');
+                document.getElementById('quotation').classList.remove('active');
+            }
+        }
+    
+        // Call the function to show the appropriate state
+        showState(taskState);
     </script>
+    
+
+    <!-- JS for Bootstrap tab functionality -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

@@ -12,7 +12,7 @@ class user(models.Model):
 #ข้อมูลธนาคาร
     bank = models.CharField(max_length=25)
     bank_address = models.CharField(max_length=50)
-    accountnumber = models.CharField()
+    accountnumber = models.CharField(max_length=15)
     userid_card = models.CharField(max_length=15)
 
 class quotation(models.Model):  
@@ -23,6 +23,8 @@ class quotation(models.Model):
     lastName = models.CharField(max_length=25)
     address = models.CharField(max_length=50)
     tel = models.CharField(max_length=10)
+
+    taksState = models.CharField(max_length=15)
 
     totalPrice = models.IntegerField()
     quotation_status = models.CharField(max_length=10)
@@ -43,7 +45,7 @@ class depositslip(models.Model):
     deposit_vat = models.IntegerField()
     deposit_totalprice = models.IntegerField()
 
-    deposit_totalpriceTH = models.CharField()
+    deposit_totalpriceTH = models.CharField(max_length=15)
     deposit_status = models.CharField(max_length=10)
     
 

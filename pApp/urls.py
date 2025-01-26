@@ -6,7 +6,7 @@ urlpatterns = [
     path('',login.Login),
     #สมัคร
     path('Register', register.Register),
-    path('index',views.index),
+    path('index/<str:quotation_number>/',views.index),
     path('home',views.home),
     #แสดงข้อมูลช่าง
     path('showProfile',profile.showProfile),
@@ -27,7 +27,7 @@ urlpatterns = [
     #หน้ารายการใบโอนมัดจำ
     path('depositslipmanage/<str:quotation_number>/', depositslipmanage.depositslip, name='depositslipmanage'),
     #ฟร์อมสร้างใบโอนมัดจำ
-    path('depositslip_form<str:quotation_number>/', depositslip_form.depositslip_form, name='depositslip_form'),
+    path('depositslip_form/<str:quotation_number>', depositslip_form.depositslip_form, name='depositslip_form'),
     #แสดงข้อมูลใบโอนมัดจำ
     path('depositslip_view/<str:quotation_number>/<str:depositslip_number>/',depositislip_view.deposit_slip_view, name='deposit_slip_view'),
 

@@ -30,48 +30,29 @@
         <!-- Task State (Hidden, used by JS) -->
         <div id="taskState" style="display:none;">{{ task_state }}</div>
 
-        <!-- Tab Content -->
-        <div class="tab-content">
-            <!-- Quotation Section -->
-            <div id="quotation" class="tab-content">
-                {% include 'quotation_view.html' %}
-                <h1 class="text-center">Quotation & Deposit Slip</h1>
-            </div>
+        <!-- แสดงผลตามค่า task_state -->
+        <div id="quotation" class="tab-content {% if task_state == 'quotation' %}active{% endif %}">
+            <!-- เนื้อหาของ Quotation -->
+            <h2>Quotation Number: {{ quotation.number }}</h2>
+            <p>{{ quotation.description }}</p>
 
-            <!-- Deposit Slip Section -->
-            <div id="depositslip" class="tab-content">
-                <!--{% include 'depositslip_view.html' %}-->
-            </div>
+            <!-- แสดงข้อมูล orders ที่เกี่ยวข้อง -->
+            <h3>Orders:</h3>
+            <ul>
+                {% for order in orders %}
+                    <li>{{ order.order_number }} - {{ order.item_name }} - {{ order.amount }}</li>
+                {% empty %}
+                    <li>No orders found for this quotation.</li>
+                {% endfor %}
+            </ul>
+
+            {% include 'quotation_view.html' %}
         </div>
 
+        <div id="depositslip" class="tab-content {% if task_state == 'depositslip' %}active{% endif %}">
+            <!-- เนื้อหาของ Deposit Slip -->
+        </div>
     </div>
-
-    <script>
-        // Get the task state from the hidden div
-        var taskState = document.getElementById('taskState').textContent;
-        console.log(taskState); // ตรวจสอบค่าของ taskState ในคอนโซล
-    
-        // Function to show the correct tab based on taskState
-        function showState(state) {
-            // Hide all sections first
-            document.querySelectorAll('.tab-content').forEach(function(tab) {
-                tab.classList.remove('active');
-            });
-    
-            // Show the corresponding section based on taskState
-            if (state === 'quotation') {
-                document.getElementById('quotation').classList.add('active');
-                document.getElementById('depositslip').classList.remove('active');
-            } else if (state === 'depositslip') {
-                document.getElementById('depositslip').classList.add('active');
-                document.getElementById('quotation').classList.remove('active');
-            }
-        }
-    
-        // Call the function to show the appropriate state
-        showState(taskState);
-    </script>
-    
 
     <!-- JS for Bootstrap tab functionality -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

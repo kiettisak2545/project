@@ -1,24 +1,26 @@
+from datetime import datetime
 from django.shortcuts import render, redirect
 from pApp.models import depositslip, deposit_orders
 
 
-def depositslip_form(request):
-    number = request.GET.get('number', None)  # ดึงพารามิเตอร์ 'number'
+def depositslip_form(request, quotation_number):
 
     if request.method == 'POST':
         # ดึงค่าจากฟอร์ม
-        depositslip_number = request.POST.get('depositslip_number')
-        depositslip_date = request.POST.get('depositslip_date')
         deposit_total = request.POST.get('deposit_total')
         deposit_vat = request.POST.get('deposit_vat')
         deposit_totalprice = request.POST.get('deposit_totalprice')
         deposit_totalpriceTH = request.POST.get('deposit_totalpriceTH')
         deposit_status = request.POST.get('deposit_status', 'Pending')  # กำหนดค่าเริ่มต้น
 
+
+        current_date = datetime.now()
+        date_str = current_date.strftime("%Y%m%d")
+        depositslip_number = date_str + str(depositslip.objects.count() + 1)
         # สร้าง depositslip ใหม่และบันทึกลงฐานข้อมูล
         new_deposit = depositslip.objects.create(
             depositslip_number=depositslip_number,
-            depositslip_date=depositslip_date,
+            depositslip_date=current_date,
             deposit_total=deposit_total,
             deposit_vat=deposit_vat,
             deposit_totalprice=deposit_totalprice,
@@ -40,4 +42,4 @@ def depositslip_form(request):
 
         return redirect('/depositslipmanage')  # เปลี่ยนเส้นทางเมื่อบันทึกสำเร็จ
 
-    return render(request, 'depositslip_form.html', {'number': number})
+    return render(request, 'depositslip_form.html', {'quotation_number': quotation_number})

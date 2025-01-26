@@ -1,15 +1,8 @@
 
 {% load static %}
-<form method="POST" action="{% url 'depositslip_form' %}">
+<form method="POST" action=""> 
     {% csrf_token %}
     <div style="width: 30rem;">
-        <div>
-            <label for="depositslip_number">เลขที่</label> ต้องแก้รูปแบบ
-            <input type="text" name="depositslip_number" id="depositslip_number" class="form-control" required>
-
-            <label for="depositslip_date">วันที่</label>
-            <input type="date" name="depositslip_date" id="depositslip_date" class="form-control" required>
-        </div>
 
         <div>
             <label for="deposit_total">รวม</label>

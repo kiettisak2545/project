@@ -47,6 +47,10 @@ class depositslip(models.Model):
 
     deposit_totalpriceTH = models.CharField(max_length=15)
     deposit_status = models.CharField(max_length=10)
+
+    depositslip = models.ForeignKey(
+        quotation,on_delete=models.CASCADE, related_name="depositslip"
+    )  # เพิ่ม ForeignKey เพื่อเชื่อมโยงกับ depositslip
     
 
 class deposit_orders(models.Model):

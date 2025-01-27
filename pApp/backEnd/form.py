@@ -3,11 +3,6 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from pApp.models import quotation, order
 
-from datetime import datetime
-from django.shortcuts import render, redirect
-from django.urls import reverse
-from pApp.models import quotation, order
-
 def form(request):
     if request.method == "POST":
         name = request.POST.get('name', '').strip()

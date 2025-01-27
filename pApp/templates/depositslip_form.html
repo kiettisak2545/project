@@ -1,31 +1,51 @@
-
+{% extends "navbar.html" %}
 {% load static %}
-<form method="POST" action=""> 
+{% block content %}
+<form method="POST" id="order-form"> 
     {% csrf_token %}
     <div style="width: 30rem;">
 
-        <div>
-            <label for="deposit_total">รวม</label>
-            <input type="text" name="deposit_total" id="deposit_total" class="form-control" required>
+    <!-- ฟอร์ม Order -->
+    <div id="orders">
+        <div class="order">
+            <label for="order_name">Order Name:</label>
+            <input type="text" name="deposit_ordername" required>
 
-            <label for="deposit_vat">ภาษีมูลค่าเพิ่ม</label>
-            <input type="text" name="deposit_vat" id="deposit_vat" class="form-control" required>
+            <label for="price">Price:</label>                       
+            <input type="number" name="deposit_price" required>
 
-            <label for="deposit_totalprice">รวมเงินทั้งหมด</label>
-            <input type="text" name="deposit_totalprice" id="deposit_totalprice" class="form-control" required>
-
-            <label for="deposit_totalpriceTH">จำนวนเงินทั้งหมดเลขไทย</label>
-            <input type="text" name="deposit_totalpriceTH" id="deposit_totalpriceTH" class="form-control" required>
+            <button type="button" class="btn btn-danger remove-order">ลบ</button>
         </div>
-
-        <div>
-            <label for="deposit_ordername[]">รายการสินค้า</label>
-            <input type="text" name="deposit_ordername" id="deposit_ordername" class="form-control" required>
-
-            <label for="deposit_price[]">ราคา</label>
-            <input type="text" name="deposit_price" id="deposit_price" class="form-control" required>
-        </div>
-
-        <button type="submit" class="btn btn-primary">บันทึก</button>
     </div>
+
+    <!-- ปุ่มเพิ่ม Order -->
+    <button type="button" id="add-order" class="btn btn-warning">เพิ่ม Order</button>
+    <button type="submit" class="btn btn-success">สร้าง Orders</button>
 </form>
+
+<script>
+    // เพิ่มแถว Order
+    document.getElementById("add-order").addEventListener("click", function () {
+        const ordersContainer = document.getElementById("orders");
+        const newOrderDiv = document.createElement('div');
+        newOrderDiv.classList.add('order');
+        newOrderDiv.innerHTML = `
+            <label for="order_name">Order Name:</label>
+            <input type="text" name="deposit_ordername" required>
+
+            <label for="price">Price:</label>
+            <input type="number" name="deposit_price" required>
+
+            <button type="button" class="btn btn-danger remove-order">ลบ</button>
+        `;
+        ordersContainer.appendChild(newOrderDiv);
+    });
+
+    // ลบแถว Order
+    document.getElementById("orders").addEventListener("click", function (e) {
+        if (e.target && e.target.classList.contains("remove-order")) {
+            e.target.closest(".order").remove();
+        }
+    });
+</script>
+{% endblock %}

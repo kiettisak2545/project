@@ -28,53 +28,97 @@
 </head>
 <body>
     <div class="container">
-        <h1 class="text-center">Quotation Detail*****</h1>
-        
-        <div class="row">
-            <div class="col-md-6">
-                <p><strong>Quotation Number:</strong> {{ quotation.number }}</p>
-                <p><strong>Name:</strong> {{ quotation.name }}</p>
-                <p><strong>Last Name:</strong> {{ quotation.lastName }}</p>
-                <p><strong>Address:</strong> {{ quotation.address }}</p>
-                <p><strong>Tel:</strong> {{ quotation.tel }}</p>
-                <h3><strong>Total Price of Quotation:</strong> {{ quotation.totalPrice }}</h3>
-            </div>
-        </div>
+        <h1 class="text-center">ใบเสนอราคา</h1>
+        <div class="text">ขอเสนอราคาให้กับ {{ quotation.name }} {{ quotation.lastName }}</p></div>
+        <div class="text">ที่อยู่ {{ quotation.address }} มีรายการดังต่อไปนี้</p></div>
+        <br>
         
         <h2>Orders</h2>
         <table class="table table-bordered">
             <thead class="thead-dark">
                 <tr>
-                    <th>#</th>
-                    <th>Order Name</th>
-                    <th>Amount</th>
-                    <th>Price</th>
-                    <th>Total</th>
+                    <th>จำนวน</th>
+                    <th>รายการ</th>
+                    <th>ราคาต่อหน่วย</th>
+                    <th>จำนวนเงิน บาท</th>
                 </tr>
             </thead>
             <tbody>
                 {% for order in orders %}
                     <tr>
-                        <td>{{ forloop.counter }}</td>
-                        <td>{{ order.orderName }}</td>
                         <td>{{ order.amount }}</td>
+                        <td>{{ order.orderName }}</td>
                         <td>{{ order.price }}</td>
-                        <td>{{ order.total }}</td>
+                        <td>{{order.total}}</td>
                     </tr>
                 {% endfor %}
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td>รวมเงิน</td>
+                    <td>{{ quotation.totalPrice }}</td>
+                </tr>
             </tbody>
         </table>
 
         <div class="footer">
+            <div class="text">ลงชื่อผู้อนุมัติจ้าง  <img src="{% static 'signatures/' %}{{ quotation.number }}.png" alt="Signature" class="signature-img">    ลงชื่อผู้เสนอราคา<img src="{% static 'signature.png' %}" alt="Signature" class="signature-img"></div>
             <!-- Signature Image -->
-            <img src="{% static 'signature.png' %}" alt="Signature" class="signature-img">
-            <img src="{% static 'signatures/' %}{{ quotation.number }}.png" alt="Signature" class="signature-img">
+            
+            
         </div>
     </div>
 
-    <!-- Optional: Popup JavaScript if needed -->
+    <div>
+        {% if show_button %}
+            {% if user.is_authenticated and user.is_staff %}
+                <button id="toggleButton" type="button" class="{% if quotation.quotation_status == '0' %}btn btn-danger{% else %}btn btn-warning{% endif %}">
+                    {% if quotation.quotation_status == "0" %}ยกเลิก{% else %}ยืนยัน{% endif %}
+                </button>
+        {% endif %}
+        {% endif %}
+    </div>
+    
+    
     <script>
-        // Your popup close functionality or other JavaScript can go here if needed
+    document.addEventListener("DOMContentLoaded", function () {
+        var button = document.getElementById("toggleButton");
+    
+        button.addEventListener("click", function () {
+            var newStatus = button.innerText === "ยืนยัน" ? "0" : "quotation";
+    
+            fetch('/update_quotation_status/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}'  // ใช้ CSRF Token เพื่อความปลอดภัย
+                },
+                body: JSON.stringify({
+                    quotation_number: "{{ quotation.number }}",
+                    status: newStatus
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    if (newStatus === "0") {
+                        button.innerText = "ยกเลิก";
+                        button.classList.remove("btn-warning");
+                        button.classList.add("btn-danger");
+                    } else {
+                        button.innerText = "ยืนยัน";
+                        button.classList.remove("btn-danger");
+                        button.classList.add("btn-warning");
+                    }
+                } else {
+                    alert("ไม่สามารถอัปเดตสถานะได้");
+                }
+            })
+            .catch(error => console.error("Error:", error));
+        });
+    });
     </script>
+    
 </body>
+
 </html>

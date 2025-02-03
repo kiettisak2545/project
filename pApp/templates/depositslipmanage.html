@@ -76,11 +76,12 @@
                     <div class="col-10"></div>
                     <div class="col-2">
                         <div class="col-2">         
-                            {% for quotation in quotations %}
                                 <div>
-                                    <a href="{% url 'depositslip_form' quotation.number %}">Go to deposit slip for Quotation {{ quotation.number }}</a>
+                                    <a href="{% url 'depositslip_form' quotation_number.number %}">
+                                        <button type="button" class="btn btn-warning">เพิ่ม</button>
+                                    </a>
+                                    <br>
                                 </div>
-                            {% endfor %}
                         </div>
                         
                     </div>
@@ -95,7 +96,7 @@
                                     <th>เลขที่</th>
                                     <th>ชื่อ</th>
                                     <th>นามสกุล</th>
-                                    <th>แก้ไข</th>
+                                    <th>แสดง</th>
                                     <th>สถานะ</th>
                                 </tr>
                             </thead>
@@ -106,7 +107,11 @@
                                             <td>{{ forloop.counter }}</td>
                                             <td>{{ depositslip.depositslip_number }}</td>
                                             <td>กำลังดำเนินการ</td>
-                                            <td>กำลังดำเนินการ</td>
+                                            <td>
+                                                <a href="/depositslip_view/{{ depositslip.depositslip_number }}/">
+                                                    <button type="button" class="btn btn-warning">ดู</button>
+                                                </a>                                    
+                                              </td>
                                             <td>กำลังดำเนินการ</td>
                                         </tr>
                                     {% endfor %}

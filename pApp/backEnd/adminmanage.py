@@ -7,3 +7,5 @@ def adminmanage(request):
 
     # ส่งข้อมูลไปยัง Template
     return render(request, 'adminmanage/index.html', {'quotations': quotations})
+
+

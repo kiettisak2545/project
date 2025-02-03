@@ -1,42 +1,151 @@
-{% extends "navbar.html" %}
-{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Profile Page{% endblock %}</title>
 
-{% block title %}
-<title>Profile Page</title>
-{% endblock %}
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <style>
+        .main-container {
+            display: flex;
+            min-height: 100vh;
+        }
 
-{% block content %} 
+        .sidebar {
+            width: 250px;
+            background-color: #343a40;
+            color: white;
+            position: fixed;
+            top: 50px;
+            bottom: 0;
+            left: -250px; /* Hidden by default */
+            transition: all 0.3s ease;
+            overflow-y: auto;
+            z-index: 999;
+        }
 
-   {% for user in all_user %}
-        <form method="post" action="/edit_user/{{ user.id }}/">
-            {% csrf_token %}
-            <div class="row" style="width: 30rem;">
-                <div class="col">
-                    <label for="name_{{ user.id }}">ชื่อ</label>
-                    <input type="text" name="name" id="name_{{ user.id }}" class="form-control" value="{{ user.name }}" disabled>
-        
-                    <label for="email_{{ user.id }}">อีเมล</label>
-                    <input type="text" name="email" id="email_{{ user.id }}" class="form-control" value="{{ user.email }}" disabled>
+        .sidebar.open {
+            left: 0; /* Show when open */
+        }
 
-                    <label for="tel_{{ user.id }}">เบอร์โทร</label>
-                    <input type="text" name="tel" id="tel_{{ user.id }}" class="form-control" value="{{ user.tel }}" disabled>
+        .sidebar a {
+            color: #dcdcdc;
+            padding: 15px 20px;
+            display: block;
+            text-decoration: none;
+        }
+
+        .sidebar a:hover {
+            background-color: #495057;
+        }
+
+        .content {
+            flex: 1;
+            margin-left: 0;
+            padding: 20px;
+            transition: margin-left 0.3s ease;
+        }
+
+        .content.shifted {
+            margin-left: 250px;
+        }
+
+        .navbar {
+            background-color: #343a40;
+            color: white;
+        }
+
+        .card.fullscreen {
+            width: 100%;
+            max-width: 100%;
+        }
+        .signature-img {
+            max-width: 100px;
+            height: auto;
+            display: block;
+        }
+
+
+        .form-control[disabled] {
+            background-color: #e9ecef;
+        }
+    </style>
+</head>
+<body>
+    {% include 'includes/navbar.html' %}
+    <div class="main-container">
+        {% include 'includes/sidebar.html' %}
+
+        <div class="content" id="content">
+            <div class="container mt-5">
+                {% block content %}
+                <div class="row">
+                    {% for user in all_user %}
+                    <div class="col-12">
+                        <div class="card fullscreen mb-4">
+                            <div class="card-header bg-primary text-white">
+                                ผู้ใช้: {{ user.name }} {{ user.lastName }}
+                            </div>
+                            <div class="card-body">
+                                <form method="post" action="/edit_user/{{ user.id }}/">
+                                    {% csrf_token %}
+                                    <div class="row g-3">
+                                        <div class="col-md-6">
+                                            <label for="name_{{ user.id }}" class="form-label">ชื่อ</label>
+                                            <input type="text" class="form-control" id="name_{{ user.id }}" value="{{ user.name }}" disabled>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="lastName_{{ user.id }}" class="form-label">นามสกุล</label>
+                                            <input type="text" class="form-control" id="lastName_{{ user.id }}" value="{{ user.lastName }}" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="row g-3 mt-3">
+                                        <div class="col-md-6">
+                                            <label for="email_{{ user.id }}" class="form-label">อีเมล</label>
+                                            <input type="email" class="form-control" id="email_{{ user.id }}" value="{{ user.email }}" disabled>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="address_{{ user.id }}" class="form-label">ที่อยู่</label>
+                                            <input type="text" class="form-control" id="address_{{ user.id }}" value="{{ user.address }}" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="row g-3 mt-3">
+                                        <div class="col-12">
+                                            <label for="tel_{{ user.id }}" class="form-label">เบอร์โทร</label>
+                                            <input type="text" class="form-control" id="tel_{{ user.id }}" value="{{ user.tel }}" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="row g-3 mt-3">
+                                        <div class="col-12 text-center">
+                                            <img src="{% static 'signature.png' %}" alt="Signature" class="img-fluid" style="max-width: 300px; height: auto;">
+                                        </div>
+                                    </div>
+                                    <div class="mt-4 text-end">
+                                        <a href="/edit_user/{{ user.id }}" class="btn btn-warning">Edit</a>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
                 </div>
-        
-                <div class="col">
-                    <label for="lastName_{{ user.id }}">นามสกุล</label>
-                    <input type="text" name="lastName" id="lastName_{{ user.id }}" class="form-control" value="{{ user.lastName }}" disabled>
-        
-                    <label for="address_{{ user.id }}">ที่อยู่</label>
-                    <input type="text" name="address" id="address_{{ user.id }}" class="form-control" value="{{ user.address }}" disabled>
-
-                </div>
-                <img src="{% static 'signature.png' %}" alt="Signature" class="signature-img">
+                {% endblock %}
             </div>
+        </div>
+    </div>
 
-            <div class="mt-3">
-                <a href="/edit_user/{{ user.id }}" class="btn btn-warning">Edit</a>
-            </div>
-        </form>
-   {% endfor %}
-    
-{% endblock %}
+    <script>
+        const toggleSidebarButton = document.getElementById("toggleSidebar");
+        const sidebar = document.getElementById("sidebar");
+        const content = document.getElementById("content");
+
+        toggleSidebarButton.addEventListener("click", () => {
+            sidebar.classList.toggle("open");
+            content.classList.toggle("shifted");
+        });
+    </script>
+</body>
+</html>

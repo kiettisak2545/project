@@ -17,45 +17,81 @@
         .tab-content.active {
             display: block;
         }
-        .signature-img {
-            width: 150px;
-            height: auto;
-        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1 class="text-center">Quotation & Deposit Slip</h1>
-
-        <!-- Task State (Hidden, used by JS) -->
+        <!-- Task State (Hidden) -->
         <div id="taskState" style="display:none;">{{ task_state }}</div>
 
-        <!-- แสดงผลตามค่า task_state -->
+        <!-- แสดง Quotation -->
         <div id="quotation" class="tab-content {% if task_state == 'quotation' %}active{% endif %}">
-            <!-- เนื้อหาของ Quotation -->
-            <h2>Quotation Number: {{ quotation.number }}</h2>
-            <p>{{ quotation.description }}</p>
-
-            <!-- แสดงข้อมูล orders ที่เกี่ยวข้อง -->
-            <h3>Orders:</h3>
-            <ul>
-                {% for order in orders %}
-                    <li>{{ order.order_number }} - {{ order.item_name }} - {{ order.amount }}</li>
-                {% empty %}
-                    <li>No orders found for this quotation.</li>
-                {% endfor %}
-            </ul>
-
             {% include 'quotation_view.html' %}
         </div>
 
-        <div id="depositslip" class="tab-content {% if task_state == 'depositslip' %}active{% endif %}">
-            <!-- เนื้อหาของ Deposit Slip -->
-        </div>
+        <!-- ✅ Loop แยก depositslip แต่ละรายการ -->
+        {% for data in deposit_data %}
+            <div id="{{ data.state }}" class="tab-content {% if task_state == data.state %}active{% endif %}">
+                <h2>Deposit Slip ID: {{ data.depositslip.id }}</h2>
+                <p>Total: {{ data.depositslip.deposit_total }}</p>
+                
+                <h3>Orders:</h3>
+                {% if data.deposit_orders %}
+                    <ul>
+                        {% for order in data.deposit_orders %}
+                            <li>{{ order.deposit_ordername }} | Price: {{ order.deposit_price }}</li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p>No deposit orders found.</p>
+                {% endif %}
+
+                {% include 'depositslip_view.html' with depositslip=data.depositslip deposit_orders=data.deposit_orders %}
+                
+            </div>
+        {% endfor %}
+              
     </div>
+  
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        
+        <label for="slip">Select an image:</label>
+        <input type="file" name="slip" id="slip" accept="image/*" required>
+
+        <br><br>
+
+        <button type="submit">Upload</button>
+
+        <h2>Uploaded Slips</h2>
+        {% for slip in slips %}
+            <img src="{{ slip.slip.url }}" alt="Slip Image" width="200px">
+        {% empty %}
+            <p>No slips uploaded yet.</p>
+        {% endfor %}
+    </form>
+
 
     <!-- JS for Bootstrap tab functionality -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var taskState = document.getElementById("taskState").innerText.trim();
+            var elements = document.getElementsByClassName("tab-content");
+
+            for (var i = 0; i < elements.length; i++) {
+                elements[i].style.display = "none";
+            }
+
+            if (document.getElementById(taskState)) {
+                document.getElementById(taskState).style.display = "block";
+            }
+        });
+    </script>
+    
+    
 </body>
 </html>

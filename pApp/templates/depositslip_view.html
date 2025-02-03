@@ -11,75 +11,83 @@
     <div style="width: 30rem;">
         <!-- ข้อมูล DepositSlip -->
         <label for="depositslip_number">เลขที่</label>
-        <input type="text" id="depositslip_number" class="form-control" value="{{ depositslip.depositslip_number }}" readonly>
+        <input type="text" id="depositslip_number" class="form-control" value="{{ depositslip.depositslip_number }}" required>
 
         <label for="depositslip_date">วันที่</label>
-        <input type="date" id="depositslip_date" class="form-control" value="{{ depositslip.depositslip_date }}" readonly>
+        <input type="date" id="depositslip_date" class="form-control" value="{{ depositslip.depositslip_date }}" required>
 
+        <h3>ช่าง</h3>
         <!-- ข้อมูล User -->
         <label for="name">ชื่อ</label>
-        <input type="text" id="name" class="form-control" value="{{ user.name }}" readonly>
+        <input type="text" id="name" class="form-control" value="{{ user.name }}" required>
 
         <label for="lastName">นามสกุล</label>
-        <input type="text" id="lastName" class="form-control" value="{{ user.last_name }}" readonly>
+        <input type="text" id="lastName" class="form-control" value="{{ user.lastName }}" required>
 
         <label for="address">ที่อยู่</label>
-        <input type="text" id="address" class="form-control" value="{{ user.address }}" readonly>
+        <input type="text" id="address" class="form-control" value="{{ user.address }}" required>
 
         <label for="userid_card">เลขประจำตัวผู้เสียภาษี</label>
-        <input type="text" id="userid_card" class="form-control" value="{{ user.userid_card }}" readonly>
+        <input type="text" id="userid_card" class="form-control" value="{{ user.userid_card }}" required>
 
         <label for="tel">เบอร์โทร</label>
-        <input type="text" id="tel" class="form-control" value="{{ user.tel }}" readonly>
+        <input type="text" id="tel" class="form-control" value="{{ user.tel }}" required>
+
+        <h3>ลูกค้า</h3>
 
         <!-- ข้อมูล Quotation -->
         <label for="customer_name">ชื่อ</label>
-        <input type="text" id="customer_name" class="form-control" value="{{ quotation.name }}" readonly>
+        <input type="text" id="customer_name" class="form-control" value="{{ quotation.name }}" required>
 
         <label for="customer_lastName">นามสกุล</label>
-        <input type="text" id="customer_lastName" class="form-control" value="{{ quotation.last_name }}" readonly>
+        <input type="text" id="customer_lastName" class="form-control" value="{{ quotation.lastName }}" required>
 
         <label for="customer_address">ที่อยู่</label>
-        <input type="text" id="customer_address" class="form-control" value="{{ quotation.address }}" readonly>
+        <input type="text" id="customer_address" class="form-control" value="{{ quotation.address }}" required>
 
         <label for="customer_tel">เบอร์โทร</label>
-        <input type="text" id="customer_tel" class="form-control" value="{{ quotation.tel }}" readonly>
-
+        <input type="text" id="customer_tel" class="form-control" value="{{ quotation.tel }}" required>
+        <br>
         <!-- ข้อมูล DepositOrder -->
-        <h3>รายการฝาก</h3>
+        <h3>รายการ</h3>
         {% for order in deposit_orders %}
         <label for="id">ลำดับ</label>
-        <input type="text" id="id" class="form-control" value="{{ order.id }}" readonly>
+        <input type="text" id="id" class="form-control" value="{{ order.id }}" required>
 
         <label for="deposit_ordername">รายการ</label>
-        <input type="text" id="deposit_ordername" class="form-control" value="{{ order.deposit_ordername }}" readonly>
+        <input type="text" id="deposit_ordername" class="form-control" value="{{ order.deposit_ordername }}" required>
 
         <label for="deposit_price">ราคา</label>
-        <input type="text" id="deposit_price" class="form-control" value="{{ order.deposit_price }}" readonly>
+        <input type="text" id="deposit_price" class="form-control" value="{{ order.deposit_price }}" required>
+        <br>
         {% endfor %}
+        <h3>รวมเงิน</h3>
+        <br>
 
         <!-- ข้อมูลรวมเงิน -->
         <label for="deposit_total">รวม</label>
-        <input type="text" id="deposit_total" class="form-control" value="{{ depositslip.deposit_total }}" readonly>
+        <input type="text" id="deposit_total" class="form-control" value="{{ depositslip.deposit_total }}" required>
 
         <label for="deposit_vat">ภาษีมูลค่าเพิ่ม</label>
-        <input type="text" id="deposit_vat" class="form-control" value="{{ depositslip.deposit_vat }}" readonly>
+        <input type="text" id="deposit_vat" class="form-control" value="{{ depositslip.deposit_vat }}" required>
 
         <label for="deposit_totalprice">รวมเงินทั้งหมด</label>
-        <input type="text" id="deposit_totalprice" class="form-control" value="{{ depositslip.deposit_totalprice }}" readonly>
+        <input type="text" id="deposit_totalprice" class="form-control" value="{{ depositslip.deposit_totalprice }}" required>
 
         <label for="deposit_totalpriceTH">จำนวนเงินทั้งหมด (เลขไทย)</label>
-        <input type="text" id="deposit_totalpriceTH" class="form-control" value="{{ depositslip.deposit_totalpriceTH }}" readonly>
+        <input type="text" id="deposit_totalpriceTH" class="form-control" value="{{ depositslip.deposit_totalpriceTH }}" required>
 
-        <!-- ข้อมูลธนาคาร -->
+        
         <label for="bank">ธนาคาร</label>
-        <input type="text" id="bank" class="form-control" value="{{ user.bank }}" readonly>
+        <input type="text" id="bank" class="form-control" value="{{ user.bank }}" required>
 
         <label for="bank_address">สาขา</label>
-        <input type="text" id="bank_address" class="form-control" value="{{ user.bank_address }}" readonly>
+        <input type="text" id="bank_address" class="form-control" value="{{ user.bank_address }}" required>
 
         <label for="accountnumber">เลขบัญชี</label>
-        <input type="text" id="accountnumber" class="form-control" value="{{ user.accountnumber }}" readonly>
+        <input type="text" id="accountnumber" class="form-control" value="{{ user.accountnumber }}" required>
+
+        
     </div>
 </body>
 </html>

@@ -127,7 +127,8 @@
                                   <td>
                                     <a href="/quotation_view/{{ quotation.number }}/">
                                         <button type="button" class="btn btn-warning">ดู</button>
-                                    </a>                                    
+                                    </a>       
+                                    <button id="toggleButton" type="button" class="btn btn-warning">ยืนยัน</button>                             
                                   </td>
                                   <td>
                                     <a href="{% url 'depositslipmanage' quotation.number %}">
@@ -201,5 +202,23 @@
             alert("Copied: " + link);
         }
     </script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var button = document.getElementById("toggleButton");
+
+        button.addEventListener("click", function () {
+            if (button.innerText === "ยืนยัน") {
+                button.innerText = "ยกเลิก";
+                button.classList.remove("btn-warning");
+                button.classList.add("btn-danger");
+            } else {
+                button.innerText = "ยืนยัน";
+                button.classList.remove("btn-danger");
+                button.classList.add("btn-warning");
+            }
+        });
+    });
+</script>
 </body>
 </html>

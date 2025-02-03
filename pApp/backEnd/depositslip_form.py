@@ -21,11 +21,11 @@ def depositslip_form(request, quotation_number):
             deposit_vat=0,
             deposit_totalprice=0,
             deposit_totalpriceTH="test",
-            deposit_status="test",
+            deposit_status=0
         )
 
-        deposit_ordername = request.POST.get('deposit_ordername', '').strip()
-        deposit_prices = request.POST.get('deposit_price', '').strip()
+        deposit_ordername = request.POST.getlist('deposit_ordername', [])
+        deposit_prices = request.POST.getlist('deposit_price', [])
 
         related_deposit = depositslip.objects.get(depositslip_number=depositslip_number)
         _deposit_total = 0
@@ -49,6 +49,9 @@ def depositslip_form(request, quotation_number):
         related_deposit.deposit_vat = _deposit_vat
         related_deposit.deposit_total = _deposit_total
         related_deposit.deposit_totalprice = _deposit_totalprice
+
+        related_deposit.save()  # บันทึกการเปลี่ยนแปลงของ related_deposit
+        
         # ดึงรายการสั่งซื้อจากฟอร์ม
         return redirect('/depositslipmanage/{}'.format(quotation_number))  # เปลี่ยนเส้นทางเมื่อบันทึกสำเร็จ
 

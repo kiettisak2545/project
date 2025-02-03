@@ -24,8 +24,6 @@ class quotation(models.Model):
     address = models.CharField(max_length=50)
     tel = models.CharField(max_length=10)
 
-    taksState = models.CharField(max_length=15)
-
     totalPrice = models.IntegerField()
     quotation_status = models.CharField(max_length=10)
 
@@ -47,7 +45,7 @@ class depositslip(models.Model):
     deposit_totalprice = models.IntegerField()
 
     deposit_totalpriceTH = models.CharField(max_length=15)
-    deposit_status = models.CharField(max_length=10)
+    deposit_status = models.IntegerField()
 
     quotation = models.ForeignKey(
         quotation,on_delete=models.CASCADE, related_name="depositslips"
@@ -58,14 +56,14 @@ class deposit_orders(models.Model):
     deposit_ordername = models.CharField(max_length=25)
     deposit_price = models.IntegerField()  
     depositslip = models.ForeignKey(
-        depositslip,on_delete=models.CASCADE, related_name="_deposit_orders"
+        depositslip,on_delete=models.CASCADE, related_name="_deposit_order"
     )  # เพิ่ม ForeignKey เพื่อเชื่อมโยงกับ depositslip
 
 class slips(models.Model):
-    slip = models.ImageField()
-    slip = models.ForeignKey(
-        depositslip,on_delete=models.CASCADE, related_name="_slips"
-    )  # เพิ่ม ForeignKey เพื่อเชื่อมโยงกับ depositslip
+    slip = models.ImageField(upload_to="slips/", null=True, blank=True) 
+    deposit = models.ForeignKey(
+        depositslip, on_delete=models.CASCADE, related_name="Dslips"
+    )  # เชื่อมกับ depositslip
 
 def __str__(self):
     return "name =" + self.name

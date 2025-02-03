@@ -9,4 +9,11 @@ def quotation_view(request, quotation_number):
     orders = quotation_data.orders.all()  # ใช้ related_name สำหรับดึง orders
 
     # ส่งข้อมูลไปยัง Template
-    return render(request, 'quotation_view.html', {'quotation': quotation_data, 'orders': orders})
+    return render(request, 'quotation_view.html', 
+    {
+        'quotation': quotation_data, 
+        'orders': orders,
+        'show_button': True  # กำหนดให้แสดงปุ่มเฉพาะที่หน้า quotation_view
+    })
+
+

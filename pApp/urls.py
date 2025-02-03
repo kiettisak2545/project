@@ -3,7 +3,6 @@ from django.urls import path
 from pApp import views
 from pApp.backEnd import  form, login, profile ,signature,register,quotation,adminmanage,edit_quotation,edit_user,depositslipmanage,depositslip_form,depositislip_view,quotation_view,update_quotation_status,upload_slip
 from django.conf import settings
-from django.conf.urls.static import static
 
 
 urlpatterns = [
@@ -36,7 +35,7 @@ urlpatterns = [
     #แสดงข้อมูลใบโอนมัดจำ
     path('depositslip_view/<str:depositslip_number>/',depositislip_view.deposit_slip_view, name='depositslip_view'),
 
-    path("upload_slip/", upload_slip.upload_slip, name="upload_slip"),
+     path('upload-slip/', upload_slip.upload_slip, name='upload_slip'),
 
 
     
@@ -44,4 +43,6 @@ urlpatterns = [
     
 
 
-]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+]
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

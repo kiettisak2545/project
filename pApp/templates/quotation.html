@@ -53,26 +53,26 @@
               
     </div>
   
-
-    <form method="post" enctype="multipart/form-data">
+    <h1>Upload Slip</h1>
+    <form method="POST" enctype="multipart/form-data">
         {% csrf_token %}
-        {{ form.as_p }}
-        
-        <label for="slip">Select an image:</label>
-        <input type="file" name="slip" id="slip" accept="image/*" required>
-
-        <br><br>
-
+        <p>
+            <label for="id_slip">เลือกรูป:</label>
+            <input type="file" name="slip" required>
+        </p>
         <button type="submit">Upload</button>
-
-        <h2>Uploaded Slips</h2>
-        {% for slip in slips %}
-            <img src="{{ slip.slip.url }}" alt="Slip Image" width="200px">
-        {% empty %}
-            <p>No slips uploaded yet.</p>
-        {% endfor %}
     </form>
+    
+    {% if message %}
+        <p>{{ message }}</p>
+    {% endif %}
+    
 
+
+    
+    
+
+    
 
     <!-- JS for Bootstrap tab functionality -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

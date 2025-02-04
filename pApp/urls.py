@@ -35,7 +35,7 @@ urlpatterns = [
     #แสดงข้อมูลใบโอนมัดจำ
     path('depositslip_view/<str:depositslip_number>/',depositislip_view.deposit_slip_view, name='depositslip_view'),
 
-     path('upload-slip/', upload_slip.upload_slip, name='upload_slip'),
+    path('quotation/', upload_slip.upload_image, name='upload_slip'),
 
 
     
@@ -43,6 +43,6 @@ urlpatterns = [
     
 
 
-]
+] # เสิร์ฟไฟล์มีเดียในโหมดพัฒนา
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

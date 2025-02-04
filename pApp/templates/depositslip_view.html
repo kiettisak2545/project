@@ -3,91 +3,154 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ใบฝากเงิน</title>
+    <title>ใบวางมัดจำ</title>
+    <style>
+        body { font-family: Arial, sans-serif; color: #000; background-color: #fff; }
+        .container { width: 21cm; height: 29.7cm; margin: auto; padding: 20px; border: 1px solid #000; }
+        .header { text-align: center; font-size: 24px; font-weight: bold; }
+        .info, .table-container, .payment-section, .bank-section { margin-top: 20px; }
+        .info div { margin-bottom: 10px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th, td { border: 1px solid #000; padding: 8px; text-align: center; }
+        .payment { margin-top: 20px; }
+        .highlight { background-color: #ddd; font-weight: bold; }
+        .qr-code { text-align: center; margin-top: 10px; font-weight: bold; }
+    </style>
 </head>
 <body>
-    <h1>ใบฝากเงิน</h1>
-    
-    <div style="width: 30rem;">
-        <!-- ข้อมูล DepositSlip -->
-        <label for="depositslip_number">เลขที่</label>
-        <input type="text" id="depositslip_number" class="form-control" value="{{ depositslip.depositslip_number }}" required>
-
-        <label for="depositslip_date">วันที่</label>
-        <input type="date" id="depositslip_date" class="form-control" value="{{ depositslip.depositslip_date }}" required>
-
-        <h3>ช่าง</h3>
-        <!-- ข้อมูล User -->
-        <label for="name">ชื่อ</label>
-        <input type="text" id="name" class="form-control" value="{{ user.name }}" required>
-
-        <label for="lastName">นามสกุล</label>
-        <input type="text" id="lastName" class="form-control" value="{{ user.lastName }}" required>
-
-        <label for="address">ที่อยู่</label>
-        <input type="text" id="address" class="form-control" value="{{ user.address }}" required>
-
-        <label for="userid_card">เลขประจำตัวผู้เสียภาษี</label>
-        <input type="text" id="userid_card" class="form-control" value="{{ user.userid_card }}" required>
-
-        <label for="tel">เบอร์โทร</label>
-        <input type="text" id="tel" class="form-control" value="{{ user.tel }}" required>
-
-        <h3>ลูกค้า</h3>
-
-        <!-- ข้อมูล Quotation -->
-        <label for="customer_name">ชื่อ</label>
-        <input type="text" id="customer_name" class="form-control" value="{{ quotation.name }}" required>
-
-        <label for="customer_lastName">นามสกุล</label>
-        <input type="text" id="customer_lastName" class="form-control" value="{{ quotation.lastName }}" required>
-
-        <label for="customer_address">ที่อยู่</label>
-        <input type="text" id="customer_address" class="form-control" value="{{ quotation.address }}" required>
-
-        <label for="customer_tel">เบอร์โทร</label>
-        <input type="text" id="customer_tel" class="form-control" value="{{ quotation.tel }}" required>
-        <br>
-        <!-- ข้อมูล DepositOrder -->
-        <h3>รายการ</h3>
-        {% for order in deposit_orders %}
-        <label for="id">ลำดับ</label>
-        <input type="text" id="id" class="form-control" value="{{ order.id }}" required>
-
-        <label for="deposit_ordername">รายการ</label>
-        <input type="text" id="deposit_ordername" class="form-control" value="{{ order.deposit_ordername }}" required>
-
-        <label for="deposit_price">ราคา</label>
-        <input type="text" id="deposit_price" class="form-control" value="{{ order.deposit_price }}" required>
-        <br>
-        {% endfor %}
-        <h3>รวมเงิน</h3>
-        <br>
-
-        <!-- ข้อมูลรวมเงิน -->
-        <label for="deposit_total">รวม</label>
-        <input type="text" id="deposit_total" class="form-control" value="{{ depositslip.deposit_total }}" required>
-
-        <label for="deposit_vat">ภาษีมูลค่าเพิ่ม</label>
-        <input type="text" id="deposit_vat" class="form-control" value="{{ depositslip.deposit_vat }}" required>
-
-        <label for="deposit_totalprice">รวมเงินทั้งหมด</label>
-        <input type="text" id="deposit_totalprice" class="form-control" value="{{ depositslip.deposit_totalprice }}" required>
-
-        <label for="deposit_totalpriceTH">จำนวนเงินทั้งหมด (เลขไทย)</label>
-        <input type="text" id="deposit_totalpriceTH" class="form-control" value="{{ depositslip.deposit_totalpriceTH }}" required>
-
+    <div class="container">
+        <div class="header">ใบวางมัดจำประจำงวดที่ {{depositslip.id}}</div>
         
-        <label for="bank">ธนาคาร</label>
-        <input type="text" id="bank" class="form-control" value="{{ user.bank }}" required>
-
-        <label for="bank_address">สาขา</label>
-        <input type="text" id="bank_address" class="form-control" value="{{ user.bank_address }}" required>
-
-        <label for="accountnumber">เลขบัญชี</label>
-        <input type="text" id="accountnumber" class="form-control" value="{{ user.accountnumber }}" required>
-
+        <div class="info">
+            <div>เลขที่: <span>{{ depositslip.depositslip_number }}</span></div>
+            <div>วันที่: <span>{{ depositslip.depositslip_date|date:"d/m/Y" }}</span></div>
+        </div>
         
+        <table>
+            <tr>
+                <td colspan="2" class="highlight">ช่าง/ผู้รับจ้าง</td>
+                <td colspan="2" class="highlight">ลูกค้า/ผู้ว่าจ้าง</td>
+            </tr>
+            <tr>
+                <td>ชื่อ:</td><td>{{ user.name }}  {{ user.lastName }}</td>
+                <td>ชื่อ:</td><td>{{ quotation.name }}  {{ quotation.lastName }}</td>
+            </tr>
+            <tr>
+                <td>ที่อยู่:</td><td>{{ user.address }}</td>
+                <td>ที่อยู่:</td><td>{{ quotation.address }}</td>
+            </tr>
+            <tr>
+                <td>เลขประจำตัวผู้เสียภาษี:</td><td>{{ user.userid_card }}</td>
+                <td rowspan="2">โทร:</td><td rowspan="2">{{ quotation.tel }}</td>
+            </tr>
+            <tr>
+                <td>โทร:</td><td>{{ user.tel }}</td>
+            </tr>
+        </table>
+        
+        <div class="table-container">
+            <table>
+                <tr class="highlight">
+                    <th>ลำดับ</th>
+                    <th>รายการ</th>
+                    <th>จำนวนเงิน/งวด</th>
+                </tr>
+                {% for order in deposit_orders %}
+                    <tr>
+                        <td>{{ order.id }}</td>
+                        <td>"{{ order.deposit_ordername }}"</td>
+                        <td>{{ order.deposit_price }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+        
+        <div class="payment-section">
+            <table>
+                <tr>
+                    {% load custom_filters %}
+                    <td rowspan="2">หมายเหตุ</td>
+                    <td>รวมเงิน:</td>
+                    <td>{{ depositslip.deposit_total }}</td>
+                </tr>
+                <tr>
+                    <td>ภาษีมูลค่าเพิ่ม (7%):</td>
+                    <td>{{ depositslip.deposit_vat }}</td>
+                </tr>
+                <tr class="highlight">
+                    <td>{{ depositslip.deposit_totalprice|bahttext }}</td>
+                    <td>รวมเงินทั้งสิ้น/งวด:</td>
+                    <td>{{ depositslip.deposit_totalprice }}</td>
+                </tr>
+            </table>
+        </div>
+        
+        <div class="bank-section">
+            <table>
+                <tr class="highlight">
+                    <th>ธนาคาร</th>
+                    <th>สาขา</th>
+                    <th>เลขบัญชีช่าง</th>
+                    <th>ชื่อบัญชีช่าง</th>
+                    <th>จำนวนเงิน</th>
+                </tr>
+                <tr>
+                    <td>{{ user.bank }}</td>
+                    <td>{{ user.bank_address }}</td>
+                    <td>{{ user.accountnumber }}</td>
+                    <td>{{ user.name }}  {{ user.lastName }}</td>
+                    <td>{{ depositslip.deposit_totalprice }}</td>
+                </tr>
+            </table>
+        </div>
+        
+        <div class="qr-code">
+            คิวอาร์สแกนจ่าย (แนบ QR Code สำหรับการชำระเงิน)
+        </div>
     </div>
+</body>
+</html>
+
+<body class="d-flex justify-content-center align-items-center vh-100">
+
+    <button id="toggleButton" class="btn btn-primary px-4 py-2" onclick="toggleText()">ยืนยัน</button>
+
+    <script>
+        function toggleText() {
+            let button = document.getElementById("toggleButton");
+    
+            fetch("", {  // ใช้ URL ปัจจุบัน (View เดิม)
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": "{{ csrf_token }}"  // ใช้ CSRF Token ของ Django
+                },
+                body: JSON.stringify({
+                    "toggle_status": true  // แจ้งให้ Django เปลี่ยนค่า deposit_status
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    if (data.new_status === 0) {
+                        button.textContent = "ยืนยัน";
+                        button.classList.remove("btn-danger");
+                        button.classList.add("btn-primary");
+                    } else {
+                        button.textContent = "ยกเลิก";
+                        button.classList.remove("btn-primary");
+                        button.classList.add("btn-danger");
+                    }
+                } else {
+                    alert("เกิดข้อผิดพลาด: " + data.error);
+                }
+            })
+            .catch(error => console.error("Error:", error));
+        }
+    </script>
+    
+    <!-- เรียกใช้ Bootstrap JavaScript (จำเป็นสำหรับบางฟีเจอร์) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 </html>

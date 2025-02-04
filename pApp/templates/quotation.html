@@ -20,30 +20,22 @@
     </style>
 </head>
 <body>
-    <div class="container">
+    < class="container">
         <!-- Task State (Hidden) -->
-        <div id="taskState" style="display:none;">{{ task_state }}</div>
+        <div id="taskState" style="display:block;">{{ task_state }}</div>
 
         <!-- แสดง Quotation -->
         <div id="quotation" class="tab-content {% if task_state == 'quotation' %}active{% endif %}">
             {% include 'quotation_view.html' %}
         </div>
+    
+</body>
 
-        <!-- ปุ่มเลือกแสดง depositslip -->
-<div class="button-group">
-    <button onclick="showAll()">Show All</button>
-    {% for data in deposit_data %}
-        {% if data.state == 0 %}
-            <button onclick="toggleDeposit('{{ data.depositslip.id }}')">
-                Deposit Slip ID: {{ data.depositslip.id }}
-            </button>
-        {% endif %}
-    {% endfor %}
 </div>
         <!-- แสดงข้อมูล depositslip -->
     {% for data in deposit_data %}
         {% if data.state == 0  %}
-            <div id="deposit_{{ data.depositslip.id }}" class="tab-content" style="display: none;">
+            <div id="deposit_{{ data.depositslip.id }}" class="tab-content.active" style="display: block;">
                 <h2>Deposit Slip ID: {{ data.depositslip.id }}</h2>
                 <p>Total: {{ data.depositslip.deposit_total }}</p>
                 
@@ -57,28 +49,14 @@
                 {% else %}
                     <p>No deposit orders found.</p>
                 {% endif %}
-
-                {% include 'depositslip_view.html' with depositslip=data.depositslip deposit_orders=data.deposit_orders %}
+                <div class="container">
+                    {% include 'depositslip_view.html' with depositslip=data.depositslip deposit_orders=data.deposit_orders %}
+                </div>
+                
             </div>
         {% endif %}
     {% endfor %}
               
-    </div>
-  
-    <h1>Upload Image</h1>
-    <form method="POST" enctype="multipart/form-data">
-        {% csrf_token %}
-        <p>
-            <label for="image">เลือกรูปภาพ:</label>
-            <input type="file" name="image" required>
-        </p>
-        <button type="submit">Upload</button>
-    </form>
-    
-    {% if message %}
-        <p>{{ message }}</p>
-    {% endif %}
-    
 
 
     <!-- JS for Bootstrap tab functionality -->
@@ -98,23 +76,6 @@
             }
         });
     </script>
-
-!-- JavaScript สำหรับแสดง/ซ่อน depositslip -->
-<script>
-    function toggleDeposit(depositId) {
-        let depositDiv = document.getElementById('deposit_' + depositId);
-        if (depositDiv.style.display === 'none' || depositDiv.style.display === '') {
-            depositDiv.style.display = 'block';  // แสดง
-        } else {
-            depositDiv.style.display = 'none';   // ซ่อน
-        }
-    }
-
-    function showAll() {
-        document.querySelectorAll('.tab-content').forEach(el => el.style.display = 'block');
-    }
-</script>
-    
     
 </body>
 </html>

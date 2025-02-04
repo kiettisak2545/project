@@ -1,20 +1,26 @@
+from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404
 from pApp.models import quotation, depositslip, deposit_orders, user
+import json
 
 def deposit_slip_view(request, depositslip_number):
-    # ดึงข้อมูล DepositSlip ตาม depositslip_number
     _depositslip = get_object_or_404(depositslip, depositslip_number=depositslip_number)
-    
-    # ดึงข้อมูล Quotation ที่เกี่ยวข้อง
     _quotation = _depositslip.quotation
-    
-    # ดึงรายการ DepositOrder ที่เกี่ยวข้องกับ DepositSlip
     _deposit_orders = deposit_orders.objects.filter(depositslip=_depositslip)
-    
-    # ดึงข้อมูล User โดยตรงจากฐานข้อมูล (สมมติว่าต้องการ user id=1)
-    context_user = get_object_or_404(user, id=1)  # แก้ไข id เป็นค่าที่คุณต้องการ
+    context_user = get_object_or_404(user, id=1)
 
-    # Context สำหรับ template
+    # 📌 ตรวจสอบว่ามีการส่งคำขอเปลี่ยน deposit_status หรือไม่
+    if request.method == "POST":
+        try:
+            data = json.loads(request.body)
+            if "toggle_status" in data:
+                _depositslip.deposit_status = -1 if _depositslip.deposit_status == 0 else 0
+                _depositslip.save()
+                return JsonResponse({"success": True, "new_status": _depositslip.deposit_status})
+        except Exception as e:
+            return JsonResponse({"success": False, "error": str(e)})
+
+    # ถ้าไม่ใช่ POST ก็แสดงหน้า HTML ปกติ
     context = {
         "depositslip": _depositslip,
         "deposit_orders": _deposit_orders,

@@ -1,75 +1,126 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="th">
     {% load static %}
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quotation Detail</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <title>ใบเสนอราคา</title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
+        /* กำหนดขนาด A4 */
+        @page {
+            size: A4;
+            margin: 2cm;
         }
-        .table th, .table td {
+
+        /* จัดให้ตรงกลาง */
+        body {
+            font-family: "Sarabun", sans-serif;
+            background-color: white;
+            color: black;
+            padding: 20px;
+        }
+
+        .container {
+            width: 21cm;
+            min-height: 29.7cm;
+            padding: 2cm;
+            border: 1px solid #ddd;
+            background: white;
+        }
+
+        .text-center {
             text-align: center;
         }
+
+        .table {
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .footer {
+            margin-top: 30px;
+            text-align: center;
+        }
+
         .signature-img {
             width: 150px;
             height: auto;
+            margin-left: 20px;
         }
-        .footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
-            margin-top: 20px;
+
+        /* ปิดแสดงบางส่วนตอนพิมพ์ */
+        @media print {
+            body {
+                background: white;
+                color: black;
+            }
+
+            .container {
+                border: none;
+            }
+
+            .btn {
+                display: none; /* ซ่อนปุ่มตอนพิมพ์ */
+            }
         }
     </style>
 </head>
+
 <body>
     <div class="container">
-        <h1 class="text-center">ใบเสนอราคา</h1>
-        <div class="text">ขอเสนอราคาให้กับ {{ quotation.name }} {{ quotation.lastName }}</p></div>
-        <div class="text">ที่อยู่ {{ quotation.address }} มีรายการดังต่อไปนี้</p></div>
-        <br>
-        
-        <h2>Orders</h2>
-        <table class="table table-bordered">
-            <thead class="thead-dark">
+        <div class="header">
+            <h2 class="text-center">ใบเสนอราคา</h2>
+        </div>
+        <p>วันที่: {{ quotation.date|date:"d/m/Y" }}</p>
+        <p>ขอเสนอราคาให้กับ: {{ quotation.name }} {{ quotation.lastName }}</p>
+        <p>ที่อยู่: {{ quotation.address }}</p>
+        <table class="table table-bordered border-dark">
+            <thead class="thead-dark" style="text-align: center;">
                 <tr>
                     <th>จำนวน</th>
                     <th>รายการ</th>
                     <th>ราคาต่อหน่วย</th>
-                    <th>จำนวนเงิน บาท</th>
+                    <th>จำนวนเงิน (บาท)</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody style="text-align: center;">
                 {% for order in orders %}
-                    <tr>
-                        <td>{{ order.amount }}</td>
-                        <td>{{ order.orderName }}</td>
-                        <td>{{ order.price }}</td>
-                        <td>{{order.total}}</td>
-                    </tr>
-                {% endfor %}
                 <tr>
-                    <td></td>
-                    <td></td>
-                    <td>รวมเงิน</td>
+                    <td>{{ order.amount }}</td>
+                    <td>{{ order.orderName }}</td>
+                    <td>{{ order.price }}</td>
+                    <td>{{ order.total }}</td>
+                </tr>
+            {% endfor %}
+                <tr>
+                    {% load custom_filters %}
+                    <td colspan="2">{{ quotation.totalPrice|bahttext }}</td>
+                    <td >รวมเงิน</td>
                     <td>{{ quotation.totalPrice }}</td>
                 </tr>
             </tbody>
         </table>
-
-        <div class="footer">
-            <div class="text">ลงชื่อผู้อนุมัติจ้าง  <img src="{% static 'signatures/' %}{{ quotation.number }}.png" alt="Signature" class="signature-img">    ลงชื่อผู้เสนอราคา<img src="{% static 'signature.png' %}" alt="Signature" class="signature-img"></div>
-            <!-- Signature Image -->
-            
-            
+        <div class="d-flex align-items-center">
+            <div class="text-start me-auto">
+                <p>ลงชื่อ <img src="{% static 'signatures/' %}{{ quotation.number }}.png" alt="Signature" class="signature-img">  (ผู้อนุมัติสั่งจ้าง)</p>
+            </div>
+            <div class="text-end ms-auto">
+                <p>ลงชื่อ <img src="{% static 'signature.png' %}" alt="Signature" class="signature-img">  (ผู้เสนอราคา)</p>
+            </div>
         </div>
-    </div>
+</div>
 
-    <div>
+    </div>
+</body>
+ 
+    <!-- ปุ่มพิมพ์ -->
+
+    <div class="text-center mt-4">
+        <button class="btn btn-primary" onclick="window.print()">พิมพ์เอกสาร</button>
         {% if show_button %}
             {% if user.is_authenticated and user.is_staff %}
                 <button id="toggleButton" type="button" class="{% if quotation.quotation_status == '0' %}btn btn-danger{% else %}btn btn-warning{% endif %}">
@@ -118,6 +169,8 @@
         });
     });
     </script>
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     
 </body>
 

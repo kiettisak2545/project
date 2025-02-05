@@ -120,12 +120,13 @@
     <!-- ปุ่มพิมพ์ -->
 
     <div class="text-center mt-4">
-        <button class="btn btn-primary" onclick="window.print()">พิมพ์เอกสาร</button>
+        
         {% if show_button %}
             {% if user.is_authenticated and user.is_staff %}
                 <button id="toggleButton" type="button" class="{% if quotation.quotation_status == '0' %}btn btn-danger{% else %}btn btn-warning{% endif %}">
                     {% if quotation.quotation_status == "0" %}ยกเลิก{% else %}ยืนยัน{% endif %}
                 </button>
+                <button class="btn btn-primary" onclick="window.print()">พิมพ์เอกสาร</button>
         {% endif %}
         {% endif %}
     </div>

@@ -39,13 +39,29 @@ def quotation_view(request, quotation_number):
         # ✅ ดึงข้อมูล user
         context_user = get_object_or_404(user, id=1)
 
-        # ✅ ส่งข้อมูลไปยังเทมเพลต
-        return render(request, 'quotation.html', {
+        # ✅ สถานะของใบเสนอราคา
+        quotation_state = quotation_data.quotation_status
+        
+        # ✅ คำนวณจำนวนงวดของ depositslips
+        total_deposit_slips = len(depositslips)
+        deposit_per_step = 100 / total_deposit_slips if total_deposit_slips > 0 else 0  # หารตามจำนวนงวด
+
+        # ✅ สร้างขั้นตอนทั้งหมดรวมถึงใบเสนอราคา
+        steps = ['ใบเสนอราคา', 'รอโอนมัดจำ', 'โอนมัดจำแล้ว', 'ดำเนินการเสร็จสิ้น']
+
+        context = {
             'task_state': deposit_state,  # ✅ task_state จะสัมพันธ์กับ deposit_status ล่าสุด
             'quotation': quotation_data,
             'orders': orders,
             'deposit_data': deposit_data,  # ✅ เก็บ depositslip & orders แยกกัน
             'user': context_user,
-        })
+            'quotation_state': quotation_state,
+            'steps': steps,  # เพิ่มขั้นตอนการแสดงสถานะทั้งหมด
+            'deposit_per_step': deposit_per_step,  # เปอร์เซ็นต์ของการโอนมัดจำ
+            'depositslips': depositslips,  # ส่งข้อมูล depositslips ไปยังเทมเพลต
+        }
+
+        # ✅ ส่งข้อมูลไปยังเทมเพลต
+        return render(request, 'quotation.html', context)
     except quotation.DoesNotExist:
         raise Http404("Quotation not found")

@@ -5,17 +5,95 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ใบวางมัดจำ</title>
     <style>
-        body { font-family: Arial, sans-serif; color: #000; background-color: #fff; }
-        .container { width: 21cm; height: 29.7cm; margin: auto; padding: 20px; border: 1px solid #000; }
-        .header { text-align: center; font-size: 24px; font-weight: bold; }
-        .info, .table-container, .payment-section, .bank-section { margin-top: 20px; }
-        .info div { margin-bottom: 10px; }
-        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-        th, td { border: 1px solid #000; padding: 8px; text-align: center; }
-        .payment { margin-top: 20px; }
-        .highlight { background-color: #ddd; font-weight: bold; }
-        .qr-code { text-align: center; margin-top: 10px; font-weight: bold; }
+        /* สไตล์สำหรับ body */
+        html, body { 
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start; /* แก้ไขการจัดตำแหน่งให้อยู่ด้านบน */
+            flex-direction: column;
+        }
+    
+        .container { 
+            width: 21cm; 
+            height: 29.7cm; 
+            padding: 1.5cm; 
+            border: 1px solid #000;
+            page-break-before: always;
+            display: flex;
+            flex-direction: column;
+            max-width: 100%;
+            overflow: hidden;
+            box-sizing: border-box; /* ทำให้ padding ไม่เกินขนาด */
+        }
+    
+        @page {
+            size: A4;
+            margin: 2cm;
+        }
+    
+        /* กำหนดการจัดตำแหน่งใน header */
+        .header { 
+            text-align: center; 
+            font-size: 24px; 
+            font-weight: bold; 
+        }
+    
+        .info div { 
+            margin-bottom: 10px; 
+        }
+    
+        table { 
+            width: 100%; 
+            border-collapse: collapse; 
+            margin-top: 10px; 
+        }
+    
+        th, td { 
+            border: 1px solid #000; 
+            padding: 8px; 
+            text-align: center; 
+        }
+    
+        .payment { 
+            margin-top: 20px; 
+        }
+    
+        .highlight { 
+            background-color: #ddd; 
+            font-weight: bold; 
+        }
+    
+        .qr-code { 
+            text-align: center; 
+            margin-top: 10px; 
+            font-weight: bold; 
+        }
+    
+        /* ปรับสไตล์สำหรับการพิมพ์ */
+        @media print {
+            body {
+                background: white;
+                color: black;
+                margin: 0;
+                padding: 0;
+                display: block; /* เปลี่ยนเป็น display:block เพื่อให้เนื้อหาพอดีกับหน้า */
+            }
+    
+            .container {
+                padding: 0;
+                border: none; /* ซ่อน border สำหรับพิมพ์ */
+            }
+    
+            /* ซ่อนปุ่มในโหมดพิมพ์ */
+            .btn {
+                display: none;
+            }
+        }
     </style>
+    
 </head>
 <body>
     <div class="container">
@@ -110,6 +188,8 @@
     </div>
 </body>
 </html>
+
+
 
 <body class="d-flex justify-content-center align-items-center vh-100">
 

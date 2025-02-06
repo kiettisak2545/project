@@ -127,16 +127,19 @@
                                   <td>
                                     <a href="/quotation_view/{{ quotation.number }}/">
                                         <button type="button" class="btn btn-warning">ดู</button>
-                                    </a>       
-                                    <button id="toggleButton" type="button" class="btn btn-warning">ยืนยัน</button>                             
+                                    </a>                                   
                                   </td>
                                   <td>
                                     <a href="{% url 'depositslipmanage' quotation.number %}">
                                         <button type="button" class="btn btn-success">สร้าง</button>
                                     </a>
                                 </td>
-                                
-                                  <td>กำลังดำเนินการ</td>
+                                    {%if quotation.quotation_status == "0"%}
+                                    
+                                    <td>เนินการเสร็จสิ้น</td>
+                                    {%else%}
+                                    <td>กำลังดำเนินการ</td>
+                                    {%endif%}
                                 </tr>
                             {% endfor %}
                             </tbody>

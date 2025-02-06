@@ -64,8 +64,9 @@
     </style>
 </head>
 <body>
+    {% include 'includes/navbar.html' %}
     <div class="main-container">
-
+        {% include 'includes/sidebar.html' %}
         <div class="content" id="content">
             {% block content %}
             <div class="container text-center">
@@ -94,8 +95,6 @@
                                 <tr>
                                     <th>ลำดับ</th>
                                     <th>เลขที่</th>
-                                    <th>ชื่อ</th>
-                                    <th>นามสกุล</th>
                                     <th>แสดง</th>
                                     <th>สถานะ</th>
                                 </tr>
@@ -105,14 +104,17 @@
                                     {% for depositslip in depositslips %}
                                         <tr>
                                             <td>{{ forloop.counter }}</td>
-                                            <td>{{ depositslip.depositslip_number }}</td>
-                                            <td>กำลังดำเนินการ</td>
+                                            <td>{{ depositslip.depositslip_number  }}</td>
                                             <td>
                                                 <a href="/depositslip_view/{{ depositslip.depositslip_number }}/">
                                                     <button type="button" class="btn btn-warning">ดู</button>
                                                 </a>                                    
                                               </td>
-                                            <td>กำลังดำเนินการ</td>
+                                            {% if depositslip.deposit_status == -1 %}
+                                            <td>ดำเนินการ</td>
+                                            {%else%}
+                                            <td>เสร็จสิ้น</td>
+                                            {%endif%}
                                         </tr>
                                     {% endfor %}
                                 {% else %}

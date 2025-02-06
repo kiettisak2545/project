@@ -24,7 +24,7 @@ def edit_user(request, user_id):
             img_data = base64.b64decode(imgstr)
 
             # ระบุเส้นทางสำหรับบันทึกไฟล์ลายเซ็น
-            signature_path = os.path.join(settings.BASE_DIR, 'static', 'signature.png')
+            signature_path = os.path.join(settings.BASE_DIR,'pApp', 'static', 'signatures.png')
 
             # บันทึกไฟล์ลายเซ็น
             with open(signature_path, 'wb') as f:

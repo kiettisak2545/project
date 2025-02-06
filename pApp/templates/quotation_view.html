@@ -11,62 +11,64 @@
 
     <style>
         /* กำหนดขนาด A4 */
-        @page {
-            size: A4;
-            margin: 2cm;
-        }
+@page {
+    size: A4;
+    margin: 2cm;
+}
 
-        /* จัดให้ตรงกลาง */
-        body {
-            font-family: "Sarabun", sans-serif;
-            background-color: white;
-            color: black;
-            padding: 20px;
-        }
+/* จัดให้ตรงกลาง */
+body {
+    font-family: "Sarabun", sans-serif;
+    background-color: white;
+    color: black;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center; /* จัดตำแหน่งเนื้อหากลาง */
+    min-height: auto; /* ปล่อยให้ยืดตามเนื้อหา */
+}
 
-        .container {
-            width: 21cm;
-            min-height: 29.7cm;
-            padding: 2cm;
-            border: 1px solid #ddd;
-            background: white;
-        }
+/* ใช้ container ให้พอดีกับขนาด A4 */
+.container {
+    width: 21cm;
+    min-height: 29.7cm;
+    padding: 2cm;
+    border: 1px solid #ddd;
+    background: white;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+}
 
-        .text-center {
-            text-align: center;
-        }
+/* ตั้งให้ปุ่มอยู่ที่ด้านล่าง */
+.footer-buttons {
+    position: absolute;
+    bottom: 20px;  /* ระยะห่างจากขอบล่าง */
+    left: 50%;
+    transform: translateX(-50%);
+}
 
-        .table {
-            width: 100%;
-            margin-top: 20px;
-        }
+/* ปรับแต่งการพิมพ์ */
+@media print {
+    body {
+        background: white;
+        color: black;
+        margin: 0;
+        padding: 0;
+        display: block; /* เปลี่ยนให้เป็น block ในโหมดพิมพ์ */
+        justify-content: flex-start; /* ตั้งให้เนื้อหาตรงกับด้านบนของหน้า */
+    }
 
-        .footer {
-            margin-top: 30px;
-            text-align: center;
-        }
+    .container {
+        border: none;
+        padding: 0;
+    }
 
-        .signature-img {
-            width: 150px;
-            height: auto;
-            margin-left: 20px;
-        }
+    .btn {
+        display: none; /* ซ่อนปุ่มตอนพิมพ์ */
+    }
+}
 
-        /* ปิดแสดงบางส่วนตอนพิมพ์ */
-        @media print {
-            body {
-                background: white;
-                color: black;
-            }
-
-            .container {
-                border: none;
-            }
-
-            .btn {
-                display: none; /* ซ่อนปุ่มตอนพิมพ์ */
-            }
-        }
     </style>
 </head>
 
@@ -79,7 +81,7 @@
         <p>ขอเสนอราคาให้กับ: {{ quotation.name }} {{ quotation.lastName }}</p>
         <p>ที่อยู่: {{ quotation.address }}</p>
         <table class="table table-bordered border-dark">
-            <thead class="thead-dark" style="text-align: center;">
+            <thead  style="text-align: center;">
                 <tr>
                     <th>จำนวน</th>
                     <th>รายการ</th>
@@ -109,35 +111,28 @@
                 <p>ลงชื่อ <img src="{% static 'signatures/' %}{{ quotation.number }}.png" alt="Signature" class="signature-img">  (ผู้อนุมัติสั่งจ้าง)</p>
             </div>
             <div class="text-end ms-auto">
-                <p>ลงชื่อ <img src="{% static 'signature.png' %}" alt="Signature" class="signature-img">  (ผู้เสนอราคา)</p>
+                <p>ลงชื่อ <img src="{% static 'signatures.png' %}" alt="Signature" class="signature-img">  (ผู้เสนอราคา)</p>
             </div>
         </div>
+        
+</div>
+<div class="text-center mt-4 footer-buttons">
+    {% if show_button %}
+        {% if user.is_authenticated and user.is_staff %}
+            <button id="toggleButton" type="button" class="{% if quotation.quotation_status == '0' %}btn btn-danger{% else %}btn btn-warning{% endif %}">
+                {% if quotation.quotation_status == "0" %}ดำเนินการเสร็จสิ้น{% else %}กำลังดำเนินการ{% endif %}
+            </button> <button class="btn  btn-warning" onclick="window.print()">พิมพ์เอกสาร</button>
+            
+        {% endif %}
+    {% endif %}
 </div>
 
-    </div>
-</body>
- 
-    <!-- ปุ่มพิมพ์ -->
-
-    <div class="text-center mt-4">
-        
-        {% if show_button %}
-            {% if user.is_authenticated and user.is_staff %}
-                <button id="toggleButton" type="button" class="{% if quotation.quotation_status == '0' %}btn btn-danger{% else %}btn btn-warning{% endif %}">
-                    {% if quotation.quotation_status == "0" %}ยกเลิก{% else %}ยืนยัน{% endif %}
-                </button>
-                <button class="btn btn-primary" onclick="window.print()">พิมพ์เอกสาร</button>
-        {% endif %}
-        {% endif %}
-    </div>
-    
-    
-    <script>
+<script>
     document.addEventListener("DOMContentLoaded", function () {
         var button = document.getElementById("toggleButton");
     
         button.addEventListener("click", function () {
-            var newStatus = button.innerText === "ยืนยัน" ? "0" : "quotation";
+            var newStatus = button.innerText === "กำลังดำเนินการ" ? "0" : "quotation";
     
             fetch('/update_quotation_status/', {
                 method: 'POST',
@@ -154,11 +149,11 @@
             .then(data => {
                 if (data.success) {
                     if (newStatus === "0") {
-                        button.innerText = "ยกเลิก";
+                        button.innerText = "ดำเนินการเสร็จสิ้น";
                         button.classList.remove("btn-warning");
                         button.classList.add("btn-danger");
                     } else {
-                        button.innerText = "ยืนยัน";
+                        button.innerText = "กำลังดำเนินการ";
                         button.classList.remove("btn-danger");
                         button.classList.add("btn-warning");
                     }
@@ -172,7 +167,14 @@
     </script>
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    
+    </div>
+    <br>
+   
 </body>
 
 </html>
+
+<body >
+    <br>
+    
+</body>

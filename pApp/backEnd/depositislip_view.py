@@ -19,13 +19,15 @@ def deposit_slip_view(request, depositslip_number):
                 return JsonResponse({"success": True, "new_status": _depositslip.deposit_status})
         except Exception as e:
             return JsonResponse({"success": False, "error": str(e)})
-
+    show_button = True
     # ถ้าไม่ใช่ POST ก็แสดงหน้า HTML ปกติ
     context = {
         "depositslip": _depositslip,
         "deposit_orders": _deposit_orders,
         "quotation": _quotation,
         "user": context_user,
+        'show_button': show_button,
+
     }
     
     return render(request, 'depositslip_view.html', context)

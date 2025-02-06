@@ -20,7 +20,6 @@ def depositslip_form(request, quotation_number):
             deposit_total=0,
             deposit_vat=0,
             deposit_totalprice=0,
-            deposit_totalpriceTH="test",
             deposit_status=0
         )
 
@@ -53,6 +52,6 @@ def depositslip_form(request, quotation_number):
         related_deposit.save()  # บันทึกการเปลี่ยนแปลงของ related_deposit
         
         # ดึงรายการสั่งซื้อจากฟอร์ม
-        return redirect('/depositslipmanage/{}'.format(quotation_number))  # เปลี่ยนเส้นทางเมื่อบันทึกสำเร็จ
+        return redirect('/depositslipmanage/{}'.format(quotation_number)+"/")  # เปลี่ยนเส้นทางเมื่อบันทึกสำเร็จ
 
     return render(request, 'depositslip_form.html', {'quotation_number': quotation_number})

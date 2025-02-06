@@ -44,7 +44,6 @@ class depositslip(models.Model):
     deposit_vat = models.IntegerField()
     deposit_totalprice = models.IntegerField()
 
-    deposit_totalpriceTH = models.CharField(max_length=15)
     deposit_status = models.IntegerField()
 
     quotation = models.ForeignKey(

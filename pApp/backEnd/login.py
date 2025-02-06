@@ -23,6 +23,7 @@ def Login(request):
 
         if user is not None:
             login(request, user)  # ใช้ฟังก์ชัน login ของ Django
+            return redirect("/adminmanage/manage/")  # เมื่อเข้าสู่ระบบสำเร็จให้เปลี่ยนไปหน้า home หรือหน้าหลัก
         else:
             messages.error(request, "อีเมลหรือรหัสผ่านไม่ถูกต้อง")  # หากไม่ถูกต้องจะแสดงข้อความผิดพลาด
 

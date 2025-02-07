@@ -221,6 +221,12 @@
         
         {% endif %}
         <br>
+
+                {% for file_url in file_urls %}
+            <img src="{{ file_url }}" alt="Deposit Slip Image"  width="400"/>
+        {% empty %}
+        {% endfor %}
+
     </div>
    
     

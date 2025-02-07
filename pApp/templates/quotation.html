@@ -106,11 +106,10 @@
                 {% endfor %}
                 
                                      <!-- ฟอร์มสำหรับอัพโหลดรูปภาพใหม่ -->
-        <h3>อัพโหลด Slip ใหม่</h3>
+        <h3>อัพโหลด Slip</h3>
         <form method="POST" enctype="multipart/form-data">
             {% csrf_token %}
-            <label for="depositslip_number">Depositslip Number:</label>
-            <input type="text" name="depositslip_number" value="{{ data.depositslip.depositslip_number }}" required>
+            <input type="hidden" name="depositslip_number" value="{{ data.depositslip.depositslip_number }}" required>
 
             <label for="slip_image">อัพโหลดภาพ Slip:</label>
             <input type="file" name="slip_image" required>

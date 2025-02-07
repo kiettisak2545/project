@@ -1,17 +1,23 @@
-from django.http import JsonResponse
-from django.shortcuts import render, get_object_or_404
-from django.core.exceptions import ImproperlyConfigured
-from pApp.models import quotation, depositslip, deposit_orders, user, slips
 import json
+
+from django.core.exceptions import ImproperlyConfigured
+from django.http import JsonResponse
+from django.shortcuts import get_object_or_404, render
+
+from pApp.models import deposit_orders, depositslip, imgs, quotation, user
+
 
 def deposit_slip_view(request, depositslip_number):
     try:
+        # ดึงข้อมูล depositslip ตาม depositslip_number
         _depositslip = get_object_or_404(depositslip, depositslip_number=depositslip_number)
         _quotation = _depositslip.quotation
         _deposit_orders = deposit_orders.objects.filter(depositslip=_depositslip)
         context_user = get_object_or_404(user, id=1)
-        _slips = slips.objects.filter(deposit=_depositslip)
-        file_urls = [slip.img.url for slip in _slips]
+        # ดึงข้อมูลภาพจาก model imgs ที่เชื่อมโยงกับ depositslip นี้
+        _imgs = imgs.objects.filter(deposit=_depositslip)
+        # สร้าง list ของ URL ภาพจาก slips
+        file_urls = [img.slip.url for img in _imgs]
     except ImproperlyConfigured as e:
         return JsonResponse({"success": False, "error": str(e)})
     
@@ -19,9 +25,10 @@ def deposit_slip_view(request, depositslip_number):
         try:
             if request.FILES.getlist('images'):
                 for image in request.FILES.getlist('images'):
-                    new_slip = slips(deposit=_depositslip, img=image)
-                    new_slip.save()
-                file_urls = [slip.img.url for slip in slips.objects.filter(deposit=_depositslip)]
+                    new_img = imgs(deposit=_depositslip, slip=image)
+                    new_img.save()
+                # รีเฟรช URL ของภาพหลังจากอัปโหลดใหม่
+                file_urls = [img.slip.url for img in imgs.objects.filter(deposit=_depositslip)]
             else:
                 data = json.loads(request.body.decode('utf-8'))
                 if "toggle_status" in data:
@@ -38,7 +45,7 @@ def deposit_slip_view(request, depositslip_number):
         "quotation": _quotation,
         "user": context_user,
         "show_button": show_button,
-        "file_urls": file_urls,
+        "file_urls": file_urls,  # ส่ง URL ภาพไปยัง template
     }
     
     return render(request, 'depositslip_view.html', context)

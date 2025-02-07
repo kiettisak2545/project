@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quotation Detail</title>
+</head>
+<body>
+    <h1>Quotation Detail</h1>
+    <p><strong>Quotation Number:</strong> {{ quotation.number }}</p>
+    <p><strong>Name:</strong> {{ quotation.name }}</p>
+    <p><strong>Last Name:</strong> {{ quotation.lastName }}</p>
+    <p><strong>Address:</strong> {{ quotation.address }}</p>
+    <p><strong>Tel:</strong> {{ quotation.tel }}</p>
+    
+    <h3><strong>Total Price of Quotation:</strong> {{ quotation.totalPrice }}</h3>
+
+    
+    <h2>Orders</h2>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Order Name</th>
+                <th>Amount</th>
+                <th>Price</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for order in orders %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ order.orderName }}</td>
+                <td>{{ order.amount }}</td>
+                <td>{{ order.price }}</td>
+                <td>{{ order.total }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

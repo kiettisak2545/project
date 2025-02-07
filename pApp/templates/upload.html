@@ -1,0 +1,12 @@
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <input type="file" name="images" multiple>
+    <button type="submit">Upload</button>
+</form>
+
+{% if file_urls %}
+    <p>Uploaded Images:</p>
+    {% for file_url in file_urls %}
+        <img src="{{ file_url }}" width="300">
+    {% endfor %}
+{% endif %}

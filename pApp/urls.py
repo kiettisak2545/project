@@ -35,7 +35,7 @@ urlpatterns = [
     #แสดงข้อมูลใบโอนมัดจำ
     path('depositslip_view/<str:depositslip_number>/',depositislip_view.deposit_slip_view, name='depositslip_view'),
 
-    path('quotation/', upload_slip.upload_image, name='upload_slip'),
+     path('upload/', upload_slip.upload_multiple_images, name='upload_image'),
 
 
     

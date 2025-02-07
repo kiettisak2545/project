@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+    {% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>แก้ไขงาน</title>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+</head>
+<body>
+    <div class="container mt-5">
+        <h2>แก้ไขงาน #{{ quotation.number }}</h2>
+        <form method="POST">
+            {% csrf_token %}
+            
+            <!-- ฟอร์มสำหรับแก้ไขข้อมูล quotation -->
+            <h3>ข้อมูลงาน</h3>
+            {{ form.as_p }}
+
+            <h3 class="mt-5">รายการคำสั่งซื้อ</h3>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>ชื่อรายการ</th>
+                        <th>จำนวน</th>
+                        <th>ราคา</th>
+                        <th>รวม</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for order_form in order_forms %}
+                    <tr>
+                        <td>{{ order_form.orderName }}</td>
+                        <td>{{ order_form.amount }}</td>
+                        <td>{{ order_form.price }}</td>
+                        <td>{{ order_form.amount.value|add:order_form.price.value }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <button type="submit" class="btn btn-success">บันทึกการแก้ไข</button>
+        </form>
+    </div>
+
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+</body>
+</html>

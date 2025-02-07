@@ -1,10 +1,13 @@
 import base64
-from django.core.files.base import ContentFile
 import os
+
 from django.conf import settings
-from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
+from django.core.files.base import ContentFile
+from django.shortcuts import get_object_or_404, redirect, render
+
 from pApp.models import user
+
 
 def edit_user(request, user_id):
     _user = get_object_or_404(user, id=user_id)
@@ -16,6 +19,12 @@ def edit_user(request, user_id):
         _user.email = request.POST.get('email')
         _user.tel = request.POST.get('tel')
         _user.address = request.POST.get('address')
+
+
+        _user.bank = request.POST.get('bank')
+        _user.bank_address = request.POST.get('bank_address')
+        _user.accountnumber = request.POST.get('accountnumber')
+        _user.userid_card = request.POST.get('userid_card')
 
         # บันทึกลายเซ็น
         signature_data = request.POST.get('signature')

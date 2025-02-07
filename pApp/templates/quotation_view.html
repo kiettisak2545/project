@@ -121,8 +121,7 @@ body {
         {% if user.is_authenticated and user.is_staff %}
             <button id="toggleButton" type="button" class="{% if quotation.quotation_status == '0' %}btn btn-danger{% else %}btn btn-warning{% endif %}">
                 {% if quotation.quotation_status == "0" %}ดำเนินการเสร็จสิ้น{% else %}กำลังดำเนินการ{% endif %}
-            </button> <button class="btn  btn-warning" onclick="window.print()">พิมพ์เอกสาร</button>
-            
+            </button> <button class="btn  btn-warning" onclick="window.print()">พิมพ์เอกสาร</button> 
         {% endif %}
     {% endif %}
     

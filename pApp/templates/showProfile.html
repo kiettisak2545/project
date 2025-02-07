@@ -113,9 +113,29 @@
                                         </div>
                                     </div>
                                     <div class="row g-3 mt-3">
-                                        <div class="col-12">
+                                        <div class="col-6">
                                             <label for="tel_{{ user.id }}" class="form-label">เบอร์โทร</label>
                                             <input type="text" class="form-control" id="tel_{{ user.id }}" value="{{ user.tel }}" disabled>
+                                        </div>
+                                        <div class="col-6">
+                                            <label for="tel_{{ user.id }}" class="form-label">ธนาคาร</label>
+                                            <input type="text" class="form-control" id="bank_{{ user.id }}" value="{{ user.bank }}" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="row g-3 mt-3">
+                                        <div class="col-6">
+                                            <label for="tel_{{ user.id }}" class="form-label">สาขา</label>
+                                            <input type="text" class="form-control" id="tel_{{ user.id }}" value="{{ user.bank_address }}" disabled>
+                                        </div>
+                                        <div class="col-6">
+                                            <label for="tel_{{ user.id }}" class="form-label">เลขบัญชี</label>
+                                            <input type="text" class="form-control" id="bank_{{ user.id }}" value="{{ user.accountnumber }}" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="row g-3 mt-3">
+                                        <div class="col-12">
+                                            <label for="tel_{{ user.id }}" class="form-label">เลขประจำตัว</label>
+                                            <input type="text" class="form-control" id="tel_{{ user.id }}" value="{{ user.userid_card }}" disabled>
                                         </div>
                                     </div>
                                     <div class="row g-3 mt-3">

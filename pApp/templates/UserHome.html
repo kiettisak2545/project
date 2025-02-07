@@ -19,21 +19,53 @@
         <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
         <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
     </head>
+
+    <style>
+        #mainNav{
+            background-color: black;
+        }
+        body{
+            /* background-color: black; */
+        }
+        header.masthead {
+        padding-top: 10.5rem;
+        padding-bottom: 6rem;
+        text-align: center;
+        color: #fff;
+        background-image: url("https://cdn.pixabay.com/photo/2017/05/05/15/06/architecture-2287327_1280.jpg");
+        background-repeat: no-repeat;
+        background-attachment: scroll;
+        background-position: center center;
+        background-size: cover;
+        }
+        #mainNav .navbar-brand{
+            /* width: 50px;
+            height: 50px; */
+            color: white;
+            font-size: 22px;
+            
+        }
+        .textcontract{
+            font-size: 50px;
+        }
+
+
+    </style>
     <body id="page-top">
         <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav">
             <div class="container">
-                <a class="navbar-brand" href="{% url 'home' %}"><img src="{% static 'assets/img/navbar-logo.svg' %}" alt="..." /></a>
+                <a class="navbar-brand navb" href="{% url 'home' %}"><img class="navb" src="https://jane.dktimeh.com/logo1.png" alt="..." /> ช่างกี้รับเหมาก่อสร้าง</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
                     Menu
                     <i class="fas fa-bars ms-1"></i>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarResponsive">
                     <ul class="navbar-nav text-uppercase ms-auto py-4 py-lg-0">
-                        <li class="nav-item"><a class="nav-link" href="#services">Services</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#portfolio">Portfolio</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#team">Team</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#services">บริการ</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#portfolio">ผลงาน</a></li>
+                        <!-- <li class="nav-item"><a class="nav-link" href="#about">เกี่ยวกับฉัน</a></li> -->
+                        <!-- <li class="nav-item"><a class="nav-link" href="#team">Team</a></li> -->
+                        <li class="nav-item"><a class="nav-link" href="#contact">ช่องทางติดต่อ</a></li>
                     </ul>
                 </div>
             </div>
@@ -41,42 +73,46 @@
 
         <header class="masthead">
             <div class="container">
-                <div class="masthead-subheading">Welcome To Our Studio!</div>
-                <div class="masthead-heading text-uppercase">It's Nice To Meet You</div>
-                <a class="btn btn-primary btn-xl text-uppercase" href="#services">Tell Me More</a>
+                <div class="masthead-subheading">ยินดีต้อนรับสู่ ช่างกี้รับเหมาก่อสร้าง!</div>
+                <div class="masthead-heading text-uppercase">รับเหมาก่อสร้าง บ้าน โรงงาน โกดัง ราคาเป็นกันเอง</div>
+                <a class="btn btn-warning btn-xl text-uppercase" href="#services">ดูเพิ่มเติม</a>
             </div>
         </header>
 
         <section class="page-section" id="services">
             <div class="container">
                 <div class="text-center">
-                    <h2 class="section-heading text-uppercase">Services</h2>
-                    <h3 class="section-subheading text-muted">Lorem ipsum dolor sit amet consectetur.</h3>
+                    <h2 class="section-heading text-uppercase">บริการ</h2>
+                    <!-- <h3 class="section-subheading text-muted">Lorem ipsum dolor sit amet consectetur.</h3> -->
                 </div>
                 <div class="row text-center">
                     <div class="col-md-4">
                         <span class="fa-stack fa-4x">
-                            <i class="fas fa-circle fa-stack-2x text-primary"></i>
-                            <i class="fas fa-shopping-cart fa-stack-1x fa-inverse"></i>
+                            <!-- <i class="fa-solid fa-building"></i> -->
+                            <i class="fas fa-circle fa-stack-2x text-warning"></i>
+                            <i class="fa-solid fa-building fa-stack-1x fa-inverse"></i>
                         </span>
-                        <h4 class="my-3">E-Commerce</h4>
-                        <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minima maxime quam architecto quo inventore harum ex magni, dicta impedit.</p>
+                        <h4 class="my-3">รับงานก่อสร้างอาคารทุกชนิด</h4>
+                        <p class="text-muted">รับสร้างโรงงาน รับสร้างโกดัง ที่พักคนงานสำเร็จรูป บ้านสำเร็จรูป รั้วสำเร็จรูป โรงจอดรถสำเร็จรูป และอาคารสำเร็จ       รูปอื่นๆ</p>
                     </div>
                     <div class="col-md-4">
                         <span class="fa-stack fa-4x">
-                            <i class="fas fa-circle fa-stack-2x text-primary"></i>
-                            <i class="fas fa-laptop fa-stack-1x fa-inverse"></i>
+                            <i class="fas fa-circle fa-stack-2x text-warning"></i>
+                            <i class="fa-solid fa-compass-drafting fa-stack-1x fa-inverse"></i>
                         </span>
-                        <h4 class="my-3">Responsive Design</h4>
-                        <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minima maxime quam architecto quo inventore harum ex magni, dicta impedit.</p>
+                        <h4 class="my-3">รับเขียนแบบก่อสร้าง</h4>
+                        <p class="text-muted">บริการออกแบบผลิตและติดตั้งโครงสร้างอาคารสำเร็จรูป
+                        </p>
                     </div>
                     <div class="col-md-4">
                         <span class="fa-stack fa-4x">
-                            <i class="fas fa-circle fa-stack-2x text-primary"></i>
-                            <i class="fas fa-lock fa-stack-1x fa-inverse"></i>
+                            <i class="fas fa-circle fa-stack-2x text-warning"></i>
+                            <i class="fa-solid fa-building-circle-check fa-stack-1x fa-inverse"></i>
                         </span>
-                        <h4 class="my-3">Web Security</h4>
-                        <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minima maxime quam architecto quo inventore harum ex magni, dicta impedit.</p>
+                        <h4 class="my-3">รับเหมาก่อสร้างและต่อเติม 
+                        </h4>
+                        <p class="text-muted">ซื่อสัตย์ สุจริต ขยัน ตะหนักถึงการก่อสร้างบนพื้นฐาน วิศวกรรม และ สถาปัตยกรรม ซึ่งได้รับการไว้วางใจจากลูกค้าธุรกิจขนาดกลางรวมไปถึงธุรกิจขนาดใหญ่มากมาย
+                        </p>
                     </div>
                 </div>
             </div>
@@ -85,8 +121,8 @@
         <section class="page-section bg-light" id="portfolio">
             <div class="container">
                 <div class="text-center">
-                    <h2 class="section-heading text-uppercase">Portfolio</h2>
-                    <h3 class="section-subheading text-muted">Lorem ipsum dolor sit amet consectetur.</h3>
+                    <h2 class="section-heading text-uppercase">ผลงาน</h2>
+                    <!-- <h3 class="section-subheading text-muted">Lorem ipsum dolor sit amet consectetur.</h3> -->
                 </div>
                 <div class="row">
                     <div class="col-lg-4 col-sm-6 mb-4">
@@ -95,23 +131,25 @@
                                 <div class="portfolio-hover">
                                     <div class="portfolio-hover-content"><i class="fas fa-plus fa-3x"></i></div>
                                 </div>
-                                <img class="img-fluid" src="{% static 'assets/img/portfolio/1.jpg' %}" alt="..." />
+                                <img class="img-fluid" src="https://jane.dktimeh.com/logo1.png" alt="..." />
                             </a>
                             <div class="portfolio-caption">
                                 <div class="portfolio-caption-heading">Threads</div>
                                 <div class="portfolio-caption-subheading text-muted">Illustration</div>
                             </div>
+                            
                         </div>
+                        
                     </div>
                     <!-- Add additional portfolio items here as needed -->
                 </div>
             </div>
         </section>
 
-        <section class="page-section" id="about">
+        <!-- <section class="page-section" id="about">
             <div class="container">
                 <div class="text-center">
-                    <h2 class="section-heading text-uppercase">About</h2>
+                    <h2 class="section-heading text-uppercase">เกี่ยวกับฉัน</h2>
                     <h3 class="section-subheading text-muted">Lorem ipsum dolor sit amet consectetur.</h3>
                 </div>
                 <ul class="timeline">
@@ -125,12 +163,12 @@
                             <div class="timeline-body"><p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p></div>
                         </div>
                     </li>
-                    <!-- Add additional timeline items here as needed -->
+                    Add additional timeline items here as needed
                 </ul>
             </div>
-        </section>
+        </section> -->
 
-        <section class="page-section bg-light" id="team">
+        <!-- <section class="page-section bg-light" id="team">
             <div class="container">
                 <div class="text-center">
                     <h2 class="section-heading text-uppercase">Our Amazing Team</h2>
@@ -147,54 +185,32 @@
                             <a class="btn btn-dark btn-social mx-2" href="#!" aria-label="Parveen Anand LinkedIn Profile"><i class="fab fa-linkedin-in"></i></a>
                         </div>
                     </div>
-                    <!-- Add additional team members here as needed -->
                 </div>
             </div>
-        </section>
+        </section> -->
 
         <section class="page-section" id="contact">
             <div class="container">
                 <div class="text-center">
-                    <h2 class="section-heading text-uppercase">Contact Us</h2>
-                    <h3 class="section-subheading text-muted">Lorem ipsum dolor sit amet consectetur.</h3>
+                    <h2 class="section-heading text-uppercase">ช่องทางติดต่อ</h2>
                 </div>
-                <form id="contactForm" data-sb-form-api-token="API_TOKEN">
-                    <div class="row align-items-stretch mb-5">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <input class="form-control" id="name" type="text" placeholder="Your Name *" data-sb-validations="required" />
-                                <div class="invalid-feedback" data-sb-feedback="name:required">A name is required.</div>
-                            </div>
-                            <div class="form-group">
-                                <input class="form-control" id="email" type="email" placeholder="Your Email *" data-sb-validations="required,email" />
-                                <div class="invalid-feedback" data-sb-feedback="email:required">An email is required.</div>
-                                <div class="invalid-feedback" data-sb-feedback="email:email">Email is not valid.</div>
-                            </div>
-                            <div class="form-group mb-md-0">
-                                <input class="form-control" id="phone" type="tel" placeholder="Your Phone *" data-sb-validations="required" />
-                                <div class="invalid-feedback" data-sb-feedback="phone:required">A phone number is required.</div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group form-group-textarea mb-md-0">
-                                <textarea class="form-control" id="message" placeholder="Your Message *" data-sb-validations="required"></textarea>
-                                <div class="invalid-feedback" data-sb-feedback="message:required">A message is required.</div>
-                            </div>
-                        </div>
+                <div class="text-white textcontract" style="display: flex; align-items: center;">
+                    <div style="flex: 1;">
+                      <p>ช่องทางติดต่อ</p>
+                      <p>E-mail: katha.kee@gmail.com</p>
+                      <p>ID Line: 0948083251</p>
+                      <p>เบอร์โทร: 0948083251</p>
+                      <p>ที่อยู่: 247/15 ม.ร. ต.เชิงทะเล อ.ถลาง จ.ภูเก็ต 83110</p>
                     </div>
-                    <div class="d-none" id="submitSuccessMessage">
-                        <div class="text-center text-white mb-3">
-                            <div class="fw-bolder">Form submission successful!</div>
-                            To activate this form, sign up at
-                            <br />
-                            <a href="https://startbootstrap.com/solution/contact-forms">https://startbootstrap.com/solution/contact-forms</a>
-                        </div>
+                    <div>
+                      <img src="https://jane.dktimeh.com/qrline.jpg" alt="QR Code">
                     </div>
-                    <div class="d-none" id="submitErrorMessage"><div class="text-center text-danger mb-3">Error sending message!</div></div>
-                    <div class="text-center"><button class="btn btn-primary btn-xl text-uppercase disabled" id="submitButton" type="submit">Send Message</button></div>
-                </form>
+                  </div>
+                  
             </div>
         </section>
+        
+        <!-- <img src="https://jane.dktimeh.com/qrline.jpg" alt="Your Image" class="w-full h-auto"> -->
 
         <footer class="footer py-4">
             <div class="container">

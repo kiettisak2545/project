@@ -1,7 +1,10 @@
 from datetime import datetime
-from django.shortcuts import render, redirect
+
+from django.shortcuts import redirect, render
 from django.urls import reverse
-from pApp.models import quotation, order
+
+from pApp.models import order, quotation
+
 
 def form(request):
     if request.method == "POST":
@@ -27,7 +30,7 @@ def form(request):
             address=address,
             tel=tel,
 
-            totalPrice = 0
+            totalPrice = 0,
         )
 
         quotation_url = reverse('quotation', kwargs={'quotation_number': quotation_number})
@@ -36,6 +39,7 @@ def form(request):
         # สมมุติว่า new_quotation คือออบเจ็กต์ของ Quotation ที่จะอัปเดต
         new_quotation.url = quotation_url  # อัปเดต URL ของ Quotation
         new_quotation.quotation_view_url = quotation_view_url  # อัปเดต URL สำหรับ quotation_view
+        new_quotation.quotation_status = "quotation"
         new_quotation.save()  # บันทึกการเปลี่ยนแปลง
         # สร้าง Orders
         create_orders(request, quotation_number)

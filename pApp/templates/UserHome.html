@@ -46,8 +46,10 @@
             
         }
         .textcontract{
-            font-size: 50px;
+            font-size: 25px;
         }
+
+        
 
 
     </style>
@@ -64,7 +66,7 @@
                         <li class="nav-item"><a class="nav-link" href="#services">บริการ</a></li>
                         <li class="nav-item"><a class="nav-link" href="#portfolio">ผลงาน</a></li>
                         <!-- <li class="nav-item"><a class="nav-link" href="#about">เกี่ยวกับฉัน</a></li> -->
-                        <!-- <li class="nav-item"><a class="nav-link" href="#team">Team</a></li> -->
+                         <li class="nav-item"><a class="nav-link" href="#team">รีวิว</a></li>
                         <li class="nav-item"><a class="nav-link" href="#contact">ช่องทางติดต่อ</a></li>
                     </ul>
                 </div>
@@ -131,20 +133,47 @@
                                 <div class="portfolio-hover">
                                     <div class="portfolio-hover-content"><i class="fas fa-plus fa-3x"></i></div>
                                 </div>
-                                <img class="img-fluid" src="https://jane.dktimeh.com/logo1.png" alt="..." />
+                                <img class="img-fluid" src="https://jane.dktimeh.com/IMG_4660.JPG" alt="..." />
                             </a>
                             <div class="portfolio-caption">
-                                <div class="portfolio-caption-heading">Threads</div>
-                                <div class="portfolio-caption-subheading text-muted">Illustration</div>
+                                <div class="portfolio-caption-heading">งานปูแผ่น SCG รอบบ้าน</div>
+                                <!-- <div class="portfolio-caption-subheading text-muted">Illustration</div> -->
                             </div>
-                            
                         </div>
-                        
                     </div>
-                    <!-- Add additional portfolio items here as needed -->
+                    <div class="col-lg-4 col-sm-6 mb-4">
+                        <div class="portfolio-item">
+                            <a class="portfolio-link" data-bs-toggle="modal" href="#portfolioModal2">
+                                <div class="portfolio-hover">
+                                    <div class="portfolio-hover-content"><i class="fas fa-plus fa-3x"></i></div>
+                                </div>
+                                <img class="img-fluid" src="https://jane.dktimeh.com/IMG_4658.JPG" alt="..." />
+                            </a>
+                            <div class="portfolio-caption">
+                                <div class="portfolio-caption-heading">ต่อเติมหน้าบ้านและครัว</div>
+                                <!-- <div class="portfolio-caption-subheading text-muted">Graphic Design</div> -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-sm-6 mb-4">
+                        <div class="portfolio-item">
+                            <a class="portfolio-link" data-bs-toggle="modal" href="#portfolioModal3">
+                                <div class="portfolio-hover">
+                                    <div class="portfolio-hover-content"><i class="fas fa-plus fa-3x"></i></div>
+                                </div>
+                                <img class="img-fluid" src="https://jane.dktimeh.com/IMG_4662332.JPG" alt="..." />
+                            </a>
+                            <div class="portfolio-caption">
+                                <div class="portfolio-caption-heading">ต่อเติมหลังบ้าน</div>
+                                <!-- <div class="portfolio-caption-subheading text-muted">Web Development</div> -->
+                            </div>
+                        </div>
+                    </div>
+                    
                 </div>
             </div>
         </section>
+        
 
         <!-- <section class="page-section" id="about">
             <div class="container">
@@ -168,47 +197,74 @@
             </div>
         </section> -->
 
-        <!-- <section class="page-section bg-light" id="team">
+         <section class="page-section bg-light" id="team">
             <div class="container">
                 <div class="text-center">
-                    <h2 class="section-heading text-uppercase">Our Amazing Team</h2>
-                    <h3 class="section-subheading text-muted">Lorem ipsum dolor sit amet consectetur.</h3>
+                    <h2 class="section-heading text-uppercase">รายการรีวิวจากผู้ใช้</h2>
                 </div>
                 <div class="row">
-                    <div class="col-lg-4">
-                        <div class="team-member">
-                            <img class="mx-auto rounded-circle" src="{% static 'assets/img/team/1.jpg' %}" alt="..." />
-                            <h4>Parveen Anand</h4>
-                            <p class="text-muted">Lead Designer</p>
-                            <a class="btn btn-dark btn-social mx-2" href="#!" aria-label="Parveen Anand Twitter Profile"><i class="fab fa-twitter"></i></a>
-                            <a class="btn btn-dark btn-social mx-2" href="#!" aria-label="Parveen Anand Facebook Profile"><i class="fab fa-facebook-f"></i></a>
-                            <a class="btn btn-dark btn-social mx-2" href="#!" aria-label="Parveen Anand LinkedIn Profile"><i class="fab fa-linkedin-in"></i></a>
+                    <div class="col-lg-12">
+                        <div class="container mt-4">
+                    
+                            {% if reviews %}
+                                <table class="table table-bordered">
+                                    <thead class="table-dark">
+                                        <tr>
+                                            <th>ชื่อ</th>
+                                            <th>นามสกุล</th>
+                                            <th>คะแนน</th>
+                                            <th>ความคิดเห็น</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for review in reviews %}
+                                        <tr>
+                                            <td>{{ review.name }}</td>
+                                            <td>{{ review.lastname }}</td>
+                                            <td>
+                                                {% for i in "12345"|make_list %}
+                                                    {% if i|add:0 <= review.star %}
+                                                        ⭐
+                                                    {% else %}
+                                                        ☆
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </td>
+                                            <td>{{ review.comment }}</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            {% else %}
+                                <p class="alert alert-warning">ยังไม่มีรีวิว</p>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
             </div>
-        </section> -->
+        </section>
 
         <section class="page-section" id="contact">
             <div class="container">
                 <div class="text-center">
                     <h2 class="section-heading text-uppercase">ช่องทางติดต่อ</h2>
                 </div>
-                <div class="text-white textcontract" style="display: flex; align-items: center;">
-                    <div style="flex: 1;">
-                      <p>ช่องทางติดต่อ</p>
-                      <p>E-mail: katha.kee@gmail.com</p>
-                      <p>ID Line: 0948083251</p>
-                      <p>เบอร์โทร: 0948083251</p>
-                      <p>ที่อยู่: 247/15 ม.ร. ต.เชิงทะเล อ.ถลาง จ.ภูเก็ต 83110</p>
+                <div class="text-white textcontract" style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center;">
+                    <div style="flex: 1; margin-right: 20px; box-sizing: border-box;">
+                        <p>ช่องทางติดต่อ</p>
+                        <p>E-mail: katha.kee@gmail.com</p>
+                        <p>ID Line: 0948083251</p>
+                        <p>เบอร์โทร: 0948083251</p>
+                        <p>ที่อยู่: 247/15 ม.ร. ต.เชิงทะเล อ.ถลาง จ.ภูเก็ต 83110</p>
                     </div>
-                    <div>
-                      <img src="https://jane.dktimeh.com/qrline.jpg" alt="QR Code">
+                    <div style="flex-shrink: 0; box-sizing: border-box;">
+                        <img class="qrcode" src="https://jane.dktimeh.com/qrline.jpg" alt="QR Code" style="max-width: 100%; height: auto; box-sizing: border-box;">
                     </div>
-                  </div>
-                  
+                </div>
             </div>
         </section>
+        
+        
         
         <!-- <img src="https://jane.dktimeh.com/qrline.jpg" alt="Your Image" class="w-full h-auto"> -->
 

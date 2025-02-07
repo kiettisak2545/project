@@ -98,7 +98,7 @@
         <button type="button" onclick="saveSignature()">Save Signature</button>
         <button type="button" onclick="clearSignature()">Clear</button>
     </form>
-    <script>
+    <script> 
         function saveSignature() {
             const dataURL = canvas.toDataURL("image/png");
             document.getElementById("signature_data").value = dataURL;

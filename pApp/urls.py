@@ -3,11 +3,11 @@ from django.conf.urls.static import static
 from django.urls import path
 
 from pApp import views
-from pApp.backEnd import (adminmanage, depositislip_view, depositslip_form,
-                          depositslipmanage, edit_quotation, edit_user, form,
-                          login, profile, quotation, quotation_view, register,
-                          signature, update_quotation_status, upload_slip,
-                          UserHome)
+from pApp.backEnd import (UserHome, adminmanage, depositislip_view,
+                          depositslip_form, depositslipmanage, edit_quotation,
+                          edit_user, form, login, profile, quotation,
+                          quotation_view, register, signature,
+                          update_quotation_status, upload_slip)
 
 urlpatterns = [
     #เข้าสู่ระบบ

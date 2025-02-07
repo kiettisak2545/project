@@ -20,7 +20,7 @@ def depositslip_form(request, quotation_number):
             deposit_total=0,
             deposit_vat=0,
             deposit_totalprice=0,
-            deposit_status=0
+            deposit_status=-1
         )
 
         deposit_ordername = request.POST.getlist('deposit_ordername', [])

@@ -8,6 +8,10 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <!-- Bootstrap CSS -->
      <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+     <!-- ใช้ FontAwesome สำหรับดาว -->
+     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    
 <style>
        html, body {
     font-family: Arial, sans-serif;
@@ -40,6 +44,46 @@
     display: block;
 }
 
+
+  /* ปรับรูปแบบของดาว */
+        .stars {
+            font-size: 40px;  /* ขนาดดาว */
+            color: #ddd;  /* สีดาวเริ่มต้น */
+            cursor: pointer;
+            transition: color 0.2s ease-in-out;
+        }
+
+        .stars.active {
+            color: #ffcc00;  /* สีดาวที่ถูกเลือก */
+        }
+
+        .review-container {
+            max-width: 500px;
+            margin: 50px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .submit-btn {
+            margin-top: 20px;
+            padding: 10px 20px;
+        }
+
+        textarea {
+            width: 100%;
+            height: 100px;
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        textarea:disabled {
+            background-color: #f8f8f8;
+        }
 
 </style>
     
@@ -154,5 +198,83 @@
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.0/dist/umd/popper.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     
+  <form id="review-form" method="POST" action=""> 
+    {% csrf_token %}
+    <div class="review-container">
+        <h3>ให้คะแนนรีวิว</h3>
+        
+        <!-- ระบบการให้คะแนนดาว -->
+        <div id="star-rating">
+            <i class="fa fa-star stars" data-value="1"></i>
+            <i class="fa fa-star stars" data-value="2"></i>
+            <i class="fa fa-star stars" data-value="3"></i>
+            <i class="fa fa-star stars" data-value="4"></i>
+            <i class="fa fa-star stars" data-value="5"></i>
+        </div>
+        
+        <!-- ช่องกรอกคอมเมนต์ -->
+        <textarea id="comment" name="comment" class="form-control mt-3" rows="3" placeholder="กรุณากรอกความคิดเห็น" {% if existing_review %}disabled{% endif %}></textarea>
+        
+        <!-- ช่องสำหรับส่งข้อมูลชื่อและนามสกุล -->
+        <input type="hidden" name="name" id="name" value="{{ quotation.name }}">
+        <input type="hidden" name="lastname" id="lastname" value="{{ quotation.lastName }}">
+
+        <!-- ปุ่มส่งรีวิว -->
+        <button id="submit-btn" type="submit" class="btn btn-primary submit-btn" disabled {% if existing_review %}disabled{% endif %}>ส่งรีวิว</button>
+    </div>
+</form>
+
+<script>
+    let selectedRating = 0;
+
+    // เมื่อคลิกดาว
+    document.querySelectorAll('.stars').forEach(star => {
+        star.addEventListener('click', function() {
+            selectedRating = this.getAttribute('data-value');
+            document.querySelectorAll('.stars').forEach(s => s.classList.remove('active'));
+            for (let i = 0; i < selectedRating; i++) {
+                document.querySelectorAll('.stars')[i].classList.add('active');
+            }
+            checkSubmit();
+        });
+    });
+
+    // เมื่อกรอกคอมเมนต์
+    document.getElementById('comment').addEventListener('input', checkSubmit);
+
+    function checkSubmit() {
+        const comment = document.getElementById('comment').value.trim();
+        // เปิดปุ่มส่งถ้ามีการเลือกดาวและกรอกคอมเมนต์
+        document.getElementById('submit-btn').disabled = !(selectedRating > 0 && comment.length > 0);
+    }
+
+    // เมื่อส่งฟอร์ม
+    document.getElementById('review-form').addEventListener('submit', function(event) {
+        event.preventDefault();  // ป้องกันการรีเฟรชหน้า
+
+        // เพิ่มค่าดาวที่เลือกไปในฟอร์ม
+        const starInput = document.createElement('input');
+        starInput.type = 'hidden';
+        starInput.name = 'star';
+        starInput.value = selectedRating;
+        this.appendChild(starInput);
+
+        // ปิดปุ่มส่งและป้องกันการส่งซ้ำทันที
+        const submitButton = document.getElementById('submit-btn');
+        submitButton.disabled = true;  // ปิดปุ่ม
+        submitButton.innerText = 'กำลังส่ง...';  // เปลี่ยนข้อความปุ่ม
+
+        // รีเซ็ตฟอร์มหลังจากส่ง (เพื่อให้ฟอร์มกลับสู่สถานะเริ่มต้น)
+        setTimeout(() => {
+            document.getElementById('review-form').reset();
+            document.querySelectorAll('.stars').forEach(s => s.classList.remove('active'));  // รีเซ็ตการเลือกดาว
+        }, 500);  // ทำให้เร็วกว่าก่อนเพื่อหลีกเลี่ยงการคลิกซ้ำ
+
+        // ส่งฟอร์ม
+        this.submit();
+    });
+</script>
+
+
 </body>
 </html>

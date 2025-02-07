@@ -7,7 +7,7 @@
 {% block content %}
     <form method="POST" id="edit-form">
         {% csrf_token %}
-        <div class="row" style="width: 30rem;">
+        <div class="row" style="width: 50rem;">
             <div class="col">
                 <label for="name">ชื่อ</label>
                 <input type="text" name="name" id="name" class="form-control" value="{{ user.name }}">
@@ -54,7 +54,7 @@
         </div>
 
         <!-- ส่วนของการเพิ่มลายเซ็น -->
-        <div class="" style="width: 30rem;">
+        <div class="" style="width: 50rem;">
             <label for="signature">ลายเซ็น</label>
             <canvas id="signature-pad" style="border: 1px solid #ccc; width: 100%; height: 50%;"></canvas>
             <input type="hidden" name="signature" id="signature">

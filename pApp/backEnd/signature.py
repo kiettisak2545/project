@@ -31,7 +31,7 @@ def signature_view(request):
 
                 # ตั้งชื่อไฟล์ตาม quotation.number
                 filename = f"{quotation_number}.png"
-                save_path = os.path.join(settings.BASE_DIR, 'pApp', 'static', 'signatures', filename)
+                save_path = os.path.join(settings.BASE_DIR, 'pApp', 'static', 'signature', filename)
 
                 # สร้างโฟลเดอร์ static/signatures หากยังไม่มี
                 os.makedirs(os.path.dirname(save_path), exist_ok=True)

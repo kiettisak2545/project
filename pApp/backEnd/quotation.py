@@ -1,10 +1,8 @@
-from django.conf import settings  # เพิ่มการใช้ settings
+from django.conf import settings
 from django.http import Http404
 from django.shortcuts import get_object_or_404, render
-
 from pApp.models import (deposit_orders, depositslip, imgs, order, quotation,
-                         slips, user)
-
+                         slips, user, review)  # เพิ่มการ import review model
 
 def quotation_view(request, quotation_number):
     try:
@@ -60,7 +58,26 @@ def quotation_view(request, quotation_number):
         # ✅ สร้างขั้นตอนทั้งหมดรวมถึงใบเสนอราคา
         steps = ['ใบเสนอราคา', 'รอโอนมัดจำ', 'โอนมัดจำแล้ว', 'ดำเนินการเสร็จสิ้น']
 
-        # ตรวจสอบว่ามีการอัพโหลดไฟล์ภาพใหม่หรือไม่
+        # ✅ ตรวจสอบการรีวิวว่าผู้ใช้ได้รีวิวแล้วหรือไม่
+        existing_review = review.objects.filter(name=quotation_data.name, lastname=quotation_data.lastName).first()
+
+        # ✅ เพิ่มการบันทึกรีวิวจากฟอร์ม POST
+        if request.method == 'POST' and 'star' in request.POST and 'comment' in request.POST:
+            if not existing_review:  # ตรวจสอบว่ามีรีวิวแล้วหรือไม่
+                star = request.POST['star']
+                comment = request.POST['comment']
+                name = quotation_data.name
+                lastname = quotation_data.lastName
+
+                # สร้างบันทึกใหม่ใน model review
+                review.objects.create(
+                    star=star,
+                    comment=comment,
+                    name=name,
+                    lastname=lastname
+                )
+
+        # ✅ ตรวจสอบว่ามีการอัพโหลดไฟล์ภาพใหม่หรือไม่
         if request.method == 'POST' and 'slip_image' in request.FILES:
             slip_image = request.FILES['slip_image']
             deposit_number = request.POST.get('depositslip_number')  # ดึง depositslip_number จากฟอร์ม
@@ -74,6 +91,9 @@ def quotation_view(request, quotation_number):
                 deposit=depositslip_data  # เชื่อมโยงกับ depositslip
             )
 
+        # ✅ ดึงข้อมูลรีวิวทั้งหมดสำหรับใบเสนอราคา
+        reviews = review.objects.filter(name=quotation_data.name, lastname=quotation_data.lastName)
+
         context = {
             'task_state': deposit_state,
             'quotation': quotation_data,
@@ -84,6 +104,8 @@ def quotation_view(request, quotation_number):
             'steps': steps,
             'deposit_per_step': deposit_per_step,
             'depositslips': depositslips,
+            'reviews': reviews,  # ส่งข้อมูลรีวิวไปยัง context
+            'existing_review': existing_review  # ส่งข้อมูลรีวิวที่มีอยู่ไปยัง context
         }
 
         return render(request, 'quotation.html', context)

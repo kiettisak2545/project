@@ -73,6 +73,12 @@ class imgs(models.Model):
         depositslip, on_delete=models.CASCADE, related_name="Dimg"
     )  # เชื่อมกับ depositslip
 
+class review(models.Model) :
+    star = models.IntegerField()
+    comment = models.CharField(max_length=250)
+    name = models.CharField(max_length=25)
+    lastname = models.CharField(max_length=25)
+
  
 
 def __str__(self):

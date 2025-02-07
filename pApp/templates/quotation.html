@@ -72,9 +72,11 @@
         </div>
                 <!-- แสดง Quotation -->
                 {% include 'quotation_view.html' %}
-            <div id="quotation" class="tab-content {% if quotation_state == 'quotation' %} active {% endif %}">
-                
-            </div>
+                <div class="col-2" style="text-align: center;" >
+                    <a href="/signature?quotation_number={{ quotation.number }}">
+                        <button class="btn btn-warning">ลงชื่อ</button>
+                    </a>
+                </div>
     </div>
 
     <!-- แสดงแถบสถานะของการโอนมัดจำในแต่ละงวด -->
@@ -90,12 +92,34 @@
             {% endfor %}
         </div>
     </div>
+
     <div>
+            
                     <!-- แสดงข้อมูล depositslip -->
         {% for data in deposit_data %}  
-            {% include 'depositslip_view.html' with depositslip=data.depositslip deposit_orders=data.deposit_orders %}
-        {% endfor %}
+            {% include 'depositslip_view.html' with depositslip=data.depositslip deposit_orders=data.deposit_orders  %}
+            
+                    {% for deposit in deposit_data %}
+                    {% for file_url in deposit.image_urls %}
+                        <img src="{{ file_url }}" class="img-thumbnail" width="150">
+                    {% endfor %}
+                {% endfor %}
+                
+                                     <!-- ฟอร์มสำหรับอัพโหลดรูปภาพใหม่ -->
+        <h3>อัพโหลด Slip ใหม่</h3>
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <label for="depositslip_number">Depositslip Number:</label>
+            <input type="text" name="depositslip_number" value="{{ data.depositslip.depositslip_number }}" required>
 
+            <label for="slip_image">อัพโหลดภาพ Slip:</label>
+            <input type="file" name="slip_image" required>
+
+            <button type="submit">อัพโหลด</button>
+        </form>
+        {% endfor %}
+                
+       
     </div>
  
 </div>

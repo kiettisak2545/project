@@ -1,9 +1,10 @@
-from django.shortcuts import render,redirect
-from django.contrib.auth import authenticate, login
-from pApp.models import user
 from django.contrib import messages
-from django.contrib.auth import get_user_model
+from django.contrib.auth import authenticate, get_user_model, login
 from django.http import HttpResponse
+from django.shortcuts import redirect, render
+
+from pApp.models import user
+
 
 def authenticate_by_email(email, password):
     try:
@@ -53,3 +54,7 @@ def form(request):
 #ดิ๊กเขียน
 def adminmanage(request):
     return render(request, 'adminmanage/index.html')
+
+
+# def userHome(request):
+#     return render(request, 'UserHome.html')

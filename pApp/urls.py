@@ -1,9 +1,13 @@
+from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path
-from pApp import views
-from pApp.backEnd import  form, login, profile ,signature,register,quotation,adminmanage,edit_quotation,edit_user,depositslipmanage,depositslip_form,depositislip_view,quotation_view,update_quotation_status,upload_slip
-from django.conf import settings
 
+from pApp import views
+from pApp.backEnd import (adminmanage, depositislip_view, depositslip_form,
+                          depositslipmanage, edit_quotation, edit_user, form,
+                          login, profile, quotation, quotation_view, register,
+                          signature, update_quotation_status, upload_slip,
+                          UserHome)
 
 urlpatterns = [
     #เข้าสู่ระบบ
@@ -35,12 +39,12 @@ urlpatterns = [
     #แสดงข้อมูลใบโอนมัดจำ
     path('depositslip_view/<str:depositslip_number>/',depositislip_view.deposit_slip_view, name='depositslip_view'),
 
-     path('upload/', upload_slip.upload_multiple_images, name='upload_image'),
 
 
     
 
-    
+    #User
+    path('UserHome', UserHome.UserHome, name='home'),
 
 
 ] # เสิร์ฟไฟล์มีเดียในโหมดพัฒนา

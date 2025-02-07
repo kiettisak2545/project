@@ -1,6 +1,7 @@
 from django.db import models
 from django.urls import reverse
 
+
 # Create your models here.
 class user(models.Model):
     email = models.EmailField(max_length=25)
@@ -49,7 +50,7 @@ class depositslip(models.Model):
     quotation = models.ForeignKey(
         quotation,on_delete=models.CASCADE, related_name="depositslips"
     )  # เพิ่ม ForeignKey เพื่อเชื่อมโยงกับ depositslip
-    
+
 
 class deposit_orders(models.Model):
     deposit_ordername = models.CharField(max_length=25)
@@ -58,11 +59,21 @@ class deposit_orders(models.Model):
         depositslip,on_delete=models.CASCADE, related_name="_deposit_order"
     )  # เพิ่ม ForeignKey เพื่อเชื่อมโยงกับ depositslip
 
-class slips(models.Model):
-    slip = models.ImageField(upload_to="slips/", null=True, blank=True) 
+class slips(models.Model): 
+    img = models.ImageField(upload_to="img/", null=True, blank=True) 
+    
     deposit = models.ForeignKey(
         depositslip, on_delete=models.CASCADE, related_name="Dslips"
     )  # เชื่อมกับ depositslip
+
+class imgs(models.Model):
+    slip = models.ImageField(upload_to="slips/", null=True, blank=True) 
+    
+    deposit = models.ForeignKey(
+        depositslip, on_delete=models.CASCADE, related_name="Dimg"
+    )  # เชื่อมกับ depositslip
+
+ 
 
 def __str__(self):
     return "name =" + self.name

@@ -1,20 +1,20 @@
 import os
 from django.conf import settings
-from django.shortcuts import render
 from django.core.files.storage import FileSystemStorage
+from django.http import JsonResponse
+from django.shortcuts import render, get_object_or_404
+from pApp.models import quotation, depositslip, deposit_orders, slips
+import json
 
-def upload_multiple_images(request):
-    if request.method == 'POST' and request.FILES.getlist('images'):
-        fs = FileSystemStorage(location=settings.MEDIA_ROOT)  # กำหนดให้บันทึกไฟล์ที่ media/
-        for image in request.FILES.getlist('images'):  # วนลูปรับไฟล์ทั้งหมด
-            fs.save(f'img/{image.name}', image)  # บันทึกไฟล์แต่ละอัน
+def upload_images(request, depositslip_number):
+    """ ฟังก์ชันสำหรับอัปโหลดรูปภาพและบันทึกลงในฐานข้อมูล """
+    _depositslip = get_object_or_404(depositslip, depositslip_number=depositslip_number)
+    file_urls = []  # เก็บ URL ของไฟล์ที่อัปโหลด
 
-    # ดึงรายชื่อไฟล์ทั้งหมดใน media/img/
-    image_dir = os.path.join(settings.MEDIA_ROOT, 'img')
-    if not os.path.exists(image_dir):
-        os.makedirs(image_dir)  # สร้างโฟลเดอร์ถ้ายังไม่มี
+    if 'images' in request.FILES:
+        for image in request.FILES.getlist('images'):
+            new_slip = slips(deposit=_depositslip, slip=image)
+            new_slip.save()  # บันทึกข้อมูลรูปภาพลงฐานข้อมูล
+            file_urls.append(new_slip.slip.url)  # เพิ่ม URL ไฟล์เข้า list
 
-    file_list = os.listdir(image_dir)  # ดึงชื่อไฟล์ทั้งหมด
-    file_urls = [settings.MEDIA_URL + 'img/' + file for file in file_list]  # แปลงเป็น URL
-
-    return render(request, 'upload.html', {'file_urls': file_urls})
+    return file_urls

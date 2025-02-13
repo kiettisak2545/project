@@ -79,7 +79,7 @@ body {
         </div>
         <p>วันที่: {{ quotation.date|date:"d/m/Y" }}</p>
         <p>ขอเสนอราคาให้กับ: {{ quotation.name }} {{ quotation.lastName }}</p>
-        <p>ที่อยู่: {{ quotation.address }}</p>
+        <p>ที่อยู่: {{ quotation.address}}</p>
         <table class="table table-bordered border-dark">
             <thead  style="text-align: center;">
                 <tr>
@@ -98,15 +98,31 @@ body {
                     <td>{{ order.total }}</td>
                 </tr>
             {% endfor %}
-                <tr>
-                    {% load custom_filters %}
-                    <td colspan="2">{{ quotation.totalPrice|bahttext }}</td>
-                    <td >รวมเงิน</td>
-                    <td>{{ quotation.totalPrice }}</td>
-                </tr>
+            
+           
+            
             </tbody>
         </table>
+
+        <table class="table table-bordered border-dark" style="text-align: center;">
+            <tr>
+                <td colspan="2" rowspan="2" style="text-align: center; vertical-align: middle;">หมายเหตุ</td>
+                <td>รวมเงิน:</td>
+                <td>{{ quotation.totalPrice }}</td>
+            </tr>
+            <tr>
+                <td>ภาษีมูลค่าเพิ่ม (7%):</td>
+                <td>{{ quotation.vat }}</td>
+            </tr>
+            <tr>
+                {% load custom_filters %}
+                <td colspan="2">{{ quotation.total|bahttext }}</td>
+                <td>รวมเงินทั้งสิ้น</td>
+                <td>{{ quotation.total }}</td>
+            </tr>
+        </table>
         <div >
+            <br>
             <div class="text-start me-auto">
                 <p>ลงชื่อ <img src="{% static 'signature/' %}{{ quotation.number }}.png" alt="Signature" class="signature-img">  (ผู้อนุมัติสั่งจ้าง)</p>
             </div>

@@ -1,5 +1,7 @@
 from django.shortcuts import get_object_or_404, render
+
 from pApp.models import quotation  # import โมเดลที่ชื่อ quotation
+
 
 def quotation_view(request, quotation_number):
     # ดึงข้อมูล Quotation จากฐานข้อมูล

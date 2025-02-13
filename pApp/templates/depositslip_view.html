@@ -110,7 +110,7 @@
 </head>
 <body>
     <div class="container">
-        <div class="header">ใบวางมัดจำประจำงวดที่ {{depositslip.id}}</div>
+        <div class="header">ใบวางมัดจำประจำงวดที่ {{quotation.depositslip.id}}</div>
         
         <div class="info">
             <div>เลขที่: <span>{{ depositslip.depositslip_number }}</span></div>
@@ -160,18 +160,14 @@
             <table>
                 <tr>
                     {% load custom_filters %}
-                    <td rowspan="2">หมายเหตุ</td>
-                    <td>รวมเงิน:</td>
-                    <td>{{ depositslip.deposit_total }}</td>
+
                 </tr>
                 <tr>
-                    <td>ภาษีมูลค่าเพิ่ม (7%):</td>
-                    <td>{{ depositslip.deposit_vat }}</td>
                 </tr>
                 <tr class="highlight">
-                    <td>{{ depositslip.deposit_totalprice|bahttext }}</td>
+                    <td>{{ depositslip.deposit_total|bahttext }}</td>
                     <td>รวมเงินทั้งสิ้น/งวด:</td>
-                    <td>{{ depositslip.deposit_totalprice }}</td>
+                    <td>{{ depositslip.deposit_total }}</td>
                 </tr>
             </table>
         </div>
@@ -190,7 +186,7 @@
                     <td>{{ user.bank_address }}</td>
                     <td>{{ user.accountnumber }}</td>
                     <td>{{ user.name }}  {{ user.lastName }}</td>
-                    <td>{{ depositslip.deposit_totalprice }}</td>
+                    <td>{{ depositslip.deposit_total }}</td>
                 </tr>
             </table>
         </div>
@@ -206,15 +202,35 @@
 
 <body >
     <br>
-
+    <div>
+        {% if show_button %}
+        <h5 class="text-center">สถานะราคา</h5>
+            <table>
+                <tr class="highlight">
+                    <th>จำนวนที่ต้องจ่ายทั้งหมด</th>
+                    <th>จำนวนที่จ่ายแล้วทั้งหมด</th>
+                    <th>จำนวนที่เหลือทั้งหมด</th>
+                </tr>
+                <tr>
+                    <td>{{quotation.chargedprice}}</td>
+                    <td>{{quotation.paidprice}}</td>
+                    <td>{{quotation.balanceprice}}</td>
+                </tr>
+            </table>
+            <br>
+        
+        {% endif %}
+    </div>
     <div class="text-center">
         {% if show_button %}
+       
         <button id="toggleButton" class="btn btn-warning " onclick="toggleText()">ดำเนินการ</button>
         <button class="btn btn-warning" onclick="window.print()">พิมพ์เอกสาร</button>
         
         <form method="POST" enctype="multipart/form-data">
             {% csrf_token %}
             <br>
+            <h5>อัพเดตความคืบหน้างาน</h5>
             <input type="file" name="images" multiple>
             <button type="submit" class="btn btn-warning">Upload</button>
         </form>

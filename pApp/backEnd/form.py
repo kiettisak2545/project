@@ -31,6 +31,13 @@ def form(request):
             tel=tel,
 
             totalPrice = 0,
+            vat =0,
+            total =0,
+
+            chargedprice = 0,
+            paidprice = 0,
+            balanceprice = 0,
+            deposit_total = 0,
         )
 
         quotation_url = reverse('quotation', kwargs={'quotation_number': quotation_number})
@@ -78,7 +85,15 @@ def create_orders(request, quotation_number):
                 total=total,
             )
 
+       
+
         # อัปเดต totalPrice ของ Quotation หลังจากสร้าง Orders ทั้งหมด
+        related_quotation.vat = total_price_sum *0.07
+        related_quotation.total = total_price_sum * 1.07
+
+        related_quotation.chargedprice = total_price_sum * 1.07 #จำนวนที่ต้องจ่าย
+        related_quotation.balanceprice = total_price_sum * 1.07 #จำนวนทั้งหมด
+
         related_quotation.totalPrice = total_price_sum
         related_quotation.save()  # บันทึกการเปลี่ยนแปลงของ quotation
 

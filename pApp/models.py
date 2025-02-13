@@ -17,15 +17,26 @@ class user(models.Model):
     userid_card = models.CharField(max_length=15)
 
 class quotation(models.Model):  
-    number = models.CharField(max_length=10)
+    
+    #taks
     url = models.CharField(max_length=255, blank=True, null=True)
     date = models.DateField(null=True, blank=True)
     name = models.CharField(max_length=25)
     lastName = models.CharField(max_length=25)
     address = models.CharField(max_length=50)
     tel = models.CharField(max_length=10)
+    
+    #quotation
+    number = models.CharField(max_length=10)
+    vat = models.IntegerField()
+    totalPrice = models.IntegerField() #จำนวนทั้งหมด
+    total = models.IntegerField()#จำนวนทั้งหมดร่วมภาษี
 
-    totalPrice = models.IntegerField()
+    #status
+    chargedprice = models.IntegerField() # จำนวนเรียกเก็บ
+    paidprice = models.IntegerField() #จำนวนที่จ่ายแล้ว
+    balanceprice = models.IntegerField() # จำนวนเงินคงเหลือ
+    deposit_total = models.IntegerField() # จำนวนสร้างใบโอนเรียกเก็บทั้งหมด
     quotation_status = models.CharField(max_length=10)
 
 class order(models.Model):   
@@ -42,10 +53,11 @@ class depositslip(models.Model):
     depositslip_number = models.CharField(max_length=25)
     depositslip_date = models.DateField(null=True, blank=True)
     deposit_total = models.IntegerField()
-    deposit_vat = models.IntegerField()
-    deposit_totalprice = models.IntegerField()
-
+    
     deposit_status = models.IntegerField()
+    deposit_paidstatus = models.CharField(max_length=25) # สถานะจ่ายเงินแล้ว
+
+    
 
     quotation = models.ForeignKey(
         quotation,on_delete=models.CASCADE, related_name="depositslips"

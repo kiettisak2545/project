@@ -10943,7 +10943,7 @@ p {
     margin-right: 0;
   }
 }
-header.masthead {
+/* header.masthead {
   padding-top: 10.5rem;
   padding-bottom: 6rem;
   text-align: center;
@@ -10953,7 +10953,7 @@ header.masthead {
   background-attachment: scroll;
   background-position: center center;
   background-size: cover;
-}
+} */
 header.masthead .masthead-subheading {
   font-size: 1.5rem;
   font-style: italic;

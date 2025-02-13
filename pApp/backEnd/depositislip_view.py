@@ -2,12 +2,14 @@ import json
 
 from django.core.exceptions import ImproperlyConfigured
 from django.http import JsonResponse
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, redirect, render
 
 from pApp.models import deposit_orders, depositslip, imgs, quotation, user
-
+       
 
 def deposit_slip_view(request, depositslip_number):
+    bools =  ""
+    booln = ""
     try:
         # ดึงข้อมูล depositslip ตาม depositslip_number
         _depositslip = get_object_or_404(depositslip, depositslip_number=depositslip_number)
@@ -18,6 +20,15 @@ def deposit_slip_view(request, depositslip_number):
         _imgs = imgs.objects.filter(deposit=_depositslip)
         # สร้าง list ของ URL ภาพจาก slips
         file_urls = [img.slip.url for img in _imgs]
+        
+       
+        if bools == booln  :
+            if _depositslip.deposit_paidstatus == "finish":
+                _quotation.paidprice += _depositslip.deposit_total
+                _quotation.save()
+
+                booln = "not"
+
     except ImproperlyConfigured as e:
         return JsonResponse({"success": False, "error": str(e)})
     
@@ -28,7 +39,8 @@ def deposit_slip_view(request, depositslip_number):
                     new_img = imgs(deposit=_depositslip, slip=image)
                     new_img.save()
                 # รีเฟรช URL ของภาพหลังจากอัปโหลดใหม่
-                file_urls = [img.slip.url for img in imgs.objects.filter(deposit=_depositslip)]
+                #file_urls = [img.slip.url for img in imgs.objects.filter(deposit=_depositslip)]
+                return redirect(request.path)
             else:
                 data = json.loads(request.body.decode('utf-8'))
                 if "toggle_status" in data:
@@ -38,6 +50,7 @@ def deposit_slip_view(request, depositslip_number):
         except Exception as e:
             return JsonResponse({"success": False, "error": str(e)})
     
+
     show_button = True
     context = {
         "depositslip": _depositslip,

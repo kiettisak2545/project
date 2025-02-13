@@ -155,6 +155,7 @@
             {% csrf_token %}
             <input type="hidden" name="depositslip_number" value="{{ data.depositslip.depositslip_number }}" required>
 
+            <p></p>
             <label for="slip_image">อัพโหลดภาพ Slip:</label>
             <input type="file" name="slip_image" required>
 
@@ -197,32 +198,37 @@
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.0/dist/umd/popper.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    
-  <form id="review-form" method="POST" action=""> 
-    {% csrf_token %}
-    <div class="review-container">
-        <h3>ให้คะแนนรีวิว</h3>
-        
-        <!-- ระบบการให้คะแนนดาว -->
-        <div id="star-rating">
-            <i class="fa fa-star stars" data-value="1"></i>
-            <i class="fa fa-star stars" data-value="2"></i>
-            <i class="fa fa-star stars" data-value="3"></i>
-            <i class="fa fa-star stars" data-value="4"></i>
-            <i class="fa fa-star stars" data-value="5"></i>
-        </div>
-        
-        <!-- ช่องกรอกคอมเมนต์ -->
-        <textarea id="comment" name="comment" class="form-control mt-3" rows="3" placeholder="กรุณากรอกความคิดเห็น" {% if existing_review %}disabled{% endif %}></textarea>
-        
-        <!-- ช่องสำหรับส่งข้อมูลชื่อและนามสกุล -->
-        <input type="hidden" name="name" id="name" value="{{ quotation.name }}">
-        <input type="hidden" name="lastname" id="lastname" value="{{ quotation.lastName }}">
+  {{quotation.paidprice}}
+  {{quotation.total}}  
 
-        <!-- ปุ่มส่งรีวิว -->
-        <button id="submit-btn" type="submit" class="btn btn-primary submit-btn" disabled {% if existing_review %}disabled{% endif %}>ส่งรีวิว</button>
-    </div>
-</form>
+  {%if quotation.paidprice >= quotation.total%}
+    <form id="review-form" method="POST" action=""> 
+        {% csrf_token %}
+        <div class="review-container">
+            <h3>ให้คะแนนรีวิว</h3>
+           
+            
+            <!-- ระบบการให้คะแนนดาว -->
+            <div id="star-rating">
+                <i class="fa fa-star stars" data-value="1"></i>
+                <i class="fa fa-star stars" data-value="2"></i>
+                <i class="fa fa-star stars" data-value="3"></i>
+                <i class="fa fa-star stars" data-value="4"></i>
+                <i class="fa fa-star stars" data-value="5"></i>
+            </div>
+            
+            <!-- ช่องกรอกคอมเมนต์ -->
+            <textarea id="comment" name="comment" class="form-control mt-3" rows="3" placeholder="กรุณากรอกความคิดเห็น" {% if existing_review %}disabled{% endif %}></textarea>
+            
+            <!-- ช่องสำหรับส่งข้อมูลชื่อและนามสกุล -->
+            <input type="hidden" name="name" id="name" value="{{ quotation.name }}">
+            <input type="hidden" name="lastname" id="lastname" value="{{ quotation.lastName }}">
+
+            <!-- ปุ่มส่งรีวิว -->
+            <button id="submit-btn" type="submit" class="btn btn-primary submit-btn" disabled {% if existing_review %}disabled{% endif %}>ส่งรีวิว</button>
+        </div>
+    </form>
+{% endif %}
 
 <script>
     let selectedRating = 0;

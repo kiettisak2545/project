@@ -97,6 +97,7 @@
                                     <th>เลขที่</th>
                                     <th>แสดง</th>
                                     <th>สถานะ</th>
+                                    <th>สลิปโอน</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -110,10 +111,17 @@
                                                     <button type="button" class="btn btn-warning">ดู</button>
                                                 </a>                                    
                                               </td>
+                                              
                                             {% if depositslip.deposit_status == -1 %}
                                             <td>ดำเนินการ</td>
                                             {%else%}
                                             <td>เสร็จสิ้น</td>
+                                            {%endif%}
+
+                                            {% if depositslip.deposit_paidstatus == "finish" %}
+                                            <td>โอนแล้ว</td>
+                                            {%else%}
+                                            <td>รอโอน</td>
                                             {%endif%}
                                         </tr>
                                     {% endfor %}

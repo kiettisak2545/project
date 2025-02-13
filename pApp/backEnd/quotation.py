@@ -81,6 +81,12 @@ def quotation_view(request, quotation_number):
         if request.method == 'POST' and 'slip_image' in request.FILES:
             slip_image = request.FILES['slip_image']
             deposit_number = request.POST.get('depositslip_number')  # ดึง depositslip_number จากฟอร์ม
+
+            depositslip_data = get_object_or_404(depositslip, depositslip_number=deposit_number)
+
+            # ✅ อัพเดตค่า deposit_paidstatus
+            depositslip_data.deposit_paidstatus = "finish"
+            depositslip_data.save()  # ต้อง save() เพื่อบันทึกการเปลี่ยนแปลง
             
             # เชื่อมโยงกับ depositslip
             depositslip_data = get_object_or_404(depositslip, depositslip_number=deposit_number)

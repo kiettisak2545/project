@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     {% load static %}
+    {% load custom_tags %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Dashboard{% endblock %}</title>
@@ -101,6 +102,7 @@
                             </thead>
                             <tbody>
                                 {% for quotation in quotations %}
+                                
                                 <tr>
                                     <td>{{ forloop.counter }}</td>
                                     <td>{{ quotation.number }}</td>
@@ -114,7 +116,7 @@
                                              readonly 
                                              style="width: 70%; border: none; background-color: #f9f9f9; text-align: left;">
                                              <button class="copy-btn" 
-                                             onclick="copyToClipboard('{{ request.scheme }}://{{ request.get_host }}/quotation/{{ quotation.number }}/')">
+                                             onclick="copyToClipboard('{{ request.scheme }}://{{ request.get_host }}/quotation/{{ quotation.number|encrypt_quotation_number }}/')">
                                          Copy
                                      </button>
                                     </div>
@@ -125,9 +127,9 @@
                                     </a>                                    
                                   </td>
                                   <td>
-                                    <a href="/quotation_view/{{ quotation.number }}/">
+                                    <a href="/quotation_view/{{ quotation.number|encrypt_quotation_number }}/">
                                         <button type="button" class="btn btn-warning">ดู</button>
-                                    </a>                                   
+                                    </a>                       
                                   </td>
                                   <td>
                                     <a href="{% url 'depositslipmanage' quotation.number %}">

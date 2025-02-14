@@ -39,6 +39,9 @@ class quotation(models.Model):
     deposit_total = models.IntegerField() # จำนวนสร้างใบโอนเรียกเก็บทั้งหมด
     quotation_status = models.CharField(max_length=10)
 
+    n = models.IntegerField()
+
+
 class order(models.Model):   
     amount = models.IntegerField()
     orderName = models.CharField(max_length=25)
@@ -56,6 +59,9 @@ class depositslip(models.Model):
     
     deposit_status = models.IntegerField()
     deposit_paidstatus = models.CharField(max_length=25) # สถานะจ่ายเงินแล้ว
+
+    num = models.IntegerField()
+
 
     
 

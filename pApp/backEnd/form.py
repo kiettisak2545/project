@@ -1,10 +1,8 @@
 from datetime import datetime
-
 from django.shortcuts import redirect, render
 from django.urls import reverse
-
 from pApp.models import order, quotation
-
+from pApp.backEnd.ulity import encrypt_url, decrypt_url  # ✅ ใช้ฟังก์ชันเข้ารหัสจาก utility.py
 
 def form(request):
     if request.method == "POST":
@@ -16,12 +14,12 @@ def form(request):
         if not name or not lastname or not address or not tel:
             return render(request, "form.html", {"error": "กรุณากรอกข้อมูลให้ครบถ้วน"})
 
-        # สร้างหมายเลข Quotation
+        # ✅ สร้างหมายเลข Quotation
         current_date = datetime.now()
         date_str = current_date.strftime("%Y%m%d")
         quotation_number = date_str + str(quotation.objects.count() + 1)
 
-        # สร้าง Quotation
+        # ✅ บันทึกข้อมูล Quotation
         new_quotation = quotation.objects.create(
             date=current_date,
             number=quotation_number,
@@ -29,54 +27,58 @@ def form(request):
             lastName=lastname,
             address=address,
             tel=tel,
-
-            totalPrice = 0,
-            vat =0,
-            total =0,
-
-            chargedprice = 0,
-            paidprice = 0,
-            balanceprice = 0,
-            deposit_total = 0,
+            totalPrice=0,
+            vat=0,
+            total=0,
+            chargedprice=0,
+            paidprice=0,
+            balanceprice=0,
+            deposit_total=0,
+            n = 1,
         )
 
-        quotation_url = reverse('quotation', kwargs={'quotation_number': quotation_number})
-        quotation_view_url = reverse('quotation_view', kwargs={'quotation_number': quotation_number})
+        # ✅ เข้ารหัส Quotation Number
+        encrypted_quotation_number = encrypt_url(quotation_number)
 
-        # สมมุติว่า new_quotation คือออบเจ็กต์ของ Quotation ที่จะอัปเดต
-        new_quotation.url = quotation_url  # อัปเดต URL ของ Quotation
-        new_quotation.quotation_view_url = quotation_view_url  # อัปเดต URL สำหรับ quotation_view
+        # ✅ สร้างลิงก์ที่เข้ารหัส
+        quotation_url = reverse('quotation', kwargs={'encrypted_quotation_number': encrypted_quotation_number})
+        quotation_view_url = reverse('quotation_view', kwargs={'encrypted_quotation_number': encrypted_quotation_number})
+
+        # ✅ บันทึก URL ลงใน Quotation
+        new_quotation.url = quotation_url
+        new_quotation.quotation_view_url = quotation_view_url
         new_quotation.quotation_status = "quotation"
-        new_quotation.save()  # บันทึกการเปลี่ยนแปลง
-        # สร้าง Orders
+        new_quotation.save()
+
+        # ✅ สร้าง Orders
         create_orders(request, quotation_number)
 
-        # ส่ง URL ไปแสดงใน Popup
+        # ✅ ส่ง URL ที่เข้ารหัสไปยังหน้า Form
         return render(request, "form.html", {"success": True, "quotation_view_url": quotation_view_url})
 
     return render(request, "form.html")
 
 
 def create_orders(request, quotation_number):
-    # รับข้อมูลจากฟอร์ม
+    # ✅ รับข้อมูลจากฟอร์ม
     order_names = request.POST.getlist('order_names', [])
     amounts = request.POST.getlist('amounts', [])
     prices = request.POST.getlist('prices', [])
 
     try:
-        # ค้นหา Quotation
+        # ✅ ค้นหา Quotation
         related_quotation = quotation.objects.get(number=quotation_number)
         
         total_price_sum = 0  # สำหรับคำนวณผลรวมของ total
 
-        # สร้าง Orders
+        # ✅ สร้าง Orders
         for i in range(len(order_names)):
             amount = int(amounts[i]) if amounts[i].isdigit() else 0
             price = int(prices[i]) if prices[i].isdigit() else 0
             total = amount * price
-            total_price_sum += total  # เพิ่มค่า total ของแต่ละ order ลงใน total_price_sum
+            total_price_sum += total  # รวม total ของแต่ละ order
 
-            # สร้าง Order แต่ไม่รวม totalPrice ยัง
+            # ✅ บันทึก Order
             order.objects.create(
                 quotation=related_quotation,
                 orderName=order_names[i].strip(),
@@ -85,21 +87,14 @@ def create_orders(request, quotation_number):
                 total=total,
             )
 
-       
-
-        # อัปเดต totalPrice ของ Quotation หลังจากสร้าง Orders ทั้งหมด
-        related_quotation.vat = total_price_sum *0.07
+        # ✅ อัปเดตยอดรวมของ Quotation
+        related_quotation.vat = total_price_sum * 0.07
         related_quotation.total = total_price_sum * 1.07
-
-        related_quotation.chargedprice = total_price_sum * 1.07 #จำนวนที่ต้องจ่าย
-        related_quotation.balanceprice = total_price_sum * 1.07 #จำนวนทั้งหมด
-
+        related_quotation.chargedprice = total_price_sum * 1.07  # จำนวนที่ต้องจ่าย
+        related_quotation.balanceprice = total_price_sum * 1.07  # จำนวนทั้งหมด
         related_quotation.totalPrice = total_price_sum
-        related_quotation.save()  # บันทึกการเปลี่ยนแปลงของ quotation
+        related_quotation.save()  # ✅ บันทึกข้อมูล
 
-
-        return redirect("/adminmanage/manage")  # เปลี่ยนไปหน้าคำสั่งซื้อสำเร็จ
+        return redirect("/adminmanage/manage")  # ✅ กลับไปหน้าจัดการคำสั่งซื้อ
     except quotation.DoesNotExist:
         return render(request, "form.html")
-
-

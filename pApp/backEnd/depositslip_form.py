@@ -35,7 +35,8 @@ def depositslip_form(request, quotation_number):
                 depositslip_number=depositslip_number,
                 depositslip_date=current_date,
                 deposit_total=0,
-                deposit_status=-1
+                deposit_status=-1,
+                num = 0,
                 )   
                 
                 related_deposit = depositslip.objects.get(depositslip_number=depositslip_number)
@@ -53,6 +54,9 @@ def depositslip_form(request, quotation_number):
         related_deposit.deposit_total = _deposit_total
 
         related_quotation.deposit_total+=_deposit_total #บันทึกราคาของใบเสนอราคาที่สร้าง
+
+        related_deposit.num = related_quotation.n
+        related_quotation.n+=1 
 
         related_deposit.save()  # บันทึกการเปลี่ยนแปลง
         related_quotation.save() # บันทึกการเปลี่ยนแปลง

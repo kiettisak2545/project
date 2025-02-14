@@ -3,9 +3,13 @@ from django.http import Http404
 from django.shortcuts import get_object_or_404, render
 from pApp.models import (deposit_orders, depositslip, imgs, order, quotation,
                          slips, user, review)  # เพิ่มการ import review model
+from pApp.backEnd.ulity import decrypt_url  # นำเข้าฟังก์ชัน decrypt_url จาก utility.py
 
-def quotation_view(request, quotation_number):
+def quotation_view(request, encrypted_quotation_number):
     try:
+        # 🔓 ถอดรหัสหมายเลข quotation_number
+        quotation_number = decrypt_url(encrypted_quotation_number)
+
         # ✅ ดึงข้อมูล Quotation จากฐานข้อมูล
         quotation_data = get_object_or_404(quotation, number=quotation_number)
         

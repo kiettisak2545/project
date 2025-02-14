@@ -26,10 +26,10 @@ urlpatterns = [
     #หน้าแก้ไขข้อมูลใบเสนอราคา
     path('quotation/<str:number>/edit_quotation/', edit_quotation.edit_quotation, name='edit_quotation'),
     # url ในแต่ละใบเสนอราคาที่เชิ่อมต่อไป หน้า quotation
-    path('quotation/<str:quotation_number>/', quotation.quotation_view, name='quotation'),
+    path('quotation/<str:encrypted_quotation_number>/', quotation.quotation_view, name='quotation'),
     path('update_quotation_status/', update_quotation_status.update_quotation_status, name='update_quotation_status'),
 
-    path('quotation_view/<str:quotation_number>/', quotation_view.quotation_view, name='quotation_view'),  # ใช้ฟังก์ชัน quotation_view
+    path('quotation_view/<str:encrypted_quotation_number>/', quotation_view.quotation_view, name='quotation_view'),  # ใช้ฟังก์ชัน quotation_view
     #ดิ๊กเขียน หน้าสร้างและจัดการงาน
     path('adminmanage/manage/', adminmanage.adminmanage, name='quotation'),
     #หน้ารายการใบโอนมัดจำ

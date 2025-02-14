@@ -4,12 +4,10 @@ from django.core.exceptions import ImproperlyConfigured
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 
-from pApp.models import deposit_orders, depositslip, imgs, quotation, user
+from pApp.models import deposit_orders, depositslip, imgs, quotation, slips, user
        
 
 def deposit_slip_view(request, depositslip_number):
-    bools =  ""
-    booln = ""
     try:
         # ดึงข้อมูล depositslip ตาม depositslip_number
         _depositslip = get_object_or_404(depositslip, depositslip_number=depositslip_number)
@@ -22,12 +20,14 @@ def deposit_slip_view(request, depositslip_number):
         file_urls = [img.slip.url for img in _imgs]
         
        
-        if bools == booln  :
+        # ใช้ Session เพื่อตรวจสอบว่ามีการอัปเดตไปแล้วหรือยัง
+        session_key = f"updated_paid_status_{_depositslip.id}"
+        if not request.session.get(session_key, False):  
             if _depositslip.deposit_paidstatus == "finish":
                 _quotation.paidprice += _depositslip.deposit_total
+                _quotation.balanceprice -= _depositslip.deposit_total
                 _quotation.save()
-
-                booln = "not"
+                request.session[session_key] = True  # บันทึกใน session เพื่อไม่ให้ทำซ้ำ
 
     except ImproperlyConfigured as e:
         return JsonResponse({"success": False, "error": str(e)})
@@ -36,10 +36,10 @@ def deposit_slip_view(request, depositslip_number):
         try:
             if request.FILES.getlist('images'):
                 for image in request.FILES.getlist('images'):
-                    new_img = imgs(deposit=_depositslip, slip=image)
+                    new_img = slips(deposit=_depositslip, img=image)
                     new_img.save()
                 # รีเฟรช URL ของภาพหลังจากอัปโหลดใหม่
-                #file_urls = [img.slip.url for img in imgs.objects.filter(deposit=_depositslip)]
+                file_urls = [img.slip.url for img in imgs.objects.filter(deposit=_depositslip)]
                 return redirect(request.path)
             else:
                 data = json.loads(request.body.decode('utf-8'))

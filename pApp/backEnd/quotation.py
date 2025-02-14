@@ -1,9 +1,9 @@
 from django.conf import settings
 from django.http import Http404
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, redirect, render
+from pApp.backEnd.ulity import decrypt_url
 from pApp.models import (deposit_orders, depositslip, imgs, order, quotation,
                          slips, user, review)  # เพิ่มการ import review model
-from pApp.backEnd.ulity import decrypt_url  # นำเข้าฟังก์ชัน decrypt_url จาก utility.py
 
 def quotation_view(request, encrypted_quotation_number):
     try:
@@ -29,7 +29,7 @@ def quotation_view(request, encrypted_quotation_number):
             if deposit_status != 0 and deposit_status != -1:
                 deposit_status = 0  # ถ้าไม่ใช่ 0 หรือ -1 ให้ใช้ 0
 
-            # ดึงเฉพาะฟิลด์ img ของ slips ที่สัมพันธ์กับ depositslip
+             # ดึงเฉพาะฟิลด์ img ของ slips ที่สัมพันธ์กับ depositslip
             slip_images = slips.objects.filter(deposit=slip).values_list('img', flat=True)
             
             # เพิ่ม MEDIA_URL เข้าไปในแต่ละ URL ของภาพ
@@ -100,11 +100,13 @@ def quotation_view(request, encrypted_quotation_number):
                 slip=slip_image,  # อัพโหลดภาพใหม่
                 deposit=depositslip_data  # เชื่อมโยงกับ depositslip
             )
+            return redirect(request.META.get('HTTP_REFERER', 'default_page_url'))
 
         # ✅ ดึงข้อมูลรีวิวทั้งหมดสำหรับใบเสนอราคา
         reviews = review.objects.filter(name=quotation_data.name, lastname=quotation_data.lastName)
 
         context = {
+            'encrypted_quotation_number': encrypted_quotation_number,
             'task_state': deposit_state,
             'quotation': quotation_data,
             'orders': orders,
@@ -116,6 +118,7 @@ def quotation_view(request, encrypted_quotation_number):
             'depositslips': depositslips,
             'reviews': reviews,  # ส่งข้อมูลรีวิวไปยัง context
             'existing_review': existing_review  # ส่งข้อมูลรีวิวที่มีอยู่ไปยัง context
+
         }
 
         return render(request, 'quotation.html', context)

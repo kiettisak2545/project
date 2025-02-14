@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
+    {% load static %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ใบวางมัดจำ</title>
@@ -193,6 +194,7 @@
         
         <div class="qr-code">
             คิวอาร์สแกนจ่าย (แนบ QR Code สำหรับการชำระเงิน)
+            <img src="{% static '77976.jpg' %}" alt="Signature" class="signature-img">
         </div>
     </div>
 </body>

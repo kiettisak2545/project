@@ -128,6 +128,7 @@ body {
             </div>
             <div class="text-end ms-auto">
                 <p>ลงชื่อ <img src="{% static 'signature.png' %}" alt="Signature" class="signature-img">  (ผู้เสนอราคา)</p>
+               
             </div>
         </div>
         
@@ -135,10 +136,11 @@ body {
 <div class="text-center mt-4 footer-buttons">
     {% if show_button %}
         {% if user.is_authenticated and user.is_staff %}
-            <button id="toggleButton" type="button" class="{% if quotation.quotation_status == '0' %}btn btn-danger{% else %}btn btn-warning{% endif %}">
-                {% if quotation.quotation_status == "0" %}ดำเนินการเสร็จสิ้น{% else %}กำลังดำเนินการ{% endif %}
-            </button> <button class="btn  btn-warning" onclick="window.print()">พิมพ์เอกสาร</button> 
+           
         {% endif %}
+        <button id="toggleButton" type="button" class="{% if quotation.quotation_status == '0' %}btn btn-danger{% else %}btn btn-warning{% endif %}">
+            {% if quotation.quotation_status == "0" %}ดำเนินการเสร็จสิ้น{% else %}กำลังดำเนินการ{% endif %}
+        </button> <button id = "print" type="button" class="btn  btn-warning" onclick="window.print()">พิมพ์เอกสาร</button> 
     {% endif %}
     
 </div>

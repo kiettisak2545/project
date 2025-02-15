@@ -18,16 +18,29 @@ def deposit_slip_view(request, depositslip_number):
         _imgs = imgs.objects.filter(deposit=_depositslip)
         # สร้าง list ของ URL ภาพจาก slips
         file_urls = [img.slip.url for img in _imgs]
+
         
        
-        # ใช้ Session เพื่อตรวจสอบว่ามีการอัปเดตไปแล้วหรือยัง
         session_key = f"updated_paid_status_{_depositslip.id}"
-        if not request.session.get(session_key, False):  
+
+        if not request.session.get(session_key, False):  # ถ้ายังไม่เคยทำการอัปเดต
             if _depositslip.deposit_paidstatus == "finish":
+                # อัปเดตค่า paidprice และ balanceprice
+                _depositslip.deposit_paidstatus = "0"
                 _quotation.paidprice += _depositslip.deposit_total
                 _quotation.balanceprice -= _depositslip.deposit_total
                 _quotation.save()
-                request.session[session_key] = True  # บันทึกใน session เพื่อไม่ให้ทำซ้ำ
+                _depositslip.save()
+                
+               
+
+                # บังคับให้โหลดค่าล่าสุดจาก DB
+                _quotation.refresh_from_db()
+
+                # บันทึกใน session เพื่อไม่ให้ทำซ้ำ
+                request.session[session_key] = True
+                request.session.modified = True  # บังคับให้ Django บันทึก Session
+
 
     except ImproperlyConfigured as e:
         return JsonResponse({"success": False, "error": str(e)})
@@ -48,7 +61,7 @@ def deposit_slip_view(request, depositslip_number):
                     _depositslip.save()
                     return JsonResponse({"success": True, "new_status": _depositslip.deposit_status})
         except Exception as e:
-            return JsonResponse({"success": False, "error": str(e)})
+           return redirect(request.path)
     
 
     show_button = True

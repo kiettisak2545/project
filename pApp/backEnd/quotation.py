@@ -41,6 +41,7 @@ def quotation_view(request, encrypted_quotation_number):
                 "state": deposit_status,
                 "image_urls": slip_images  # ส่งเฉพาะ img ของ slips
             })
+            
 
         # ✅ ถ้ามี depositslip ให้ใช้ deposit_status ของอันล่าสุดเป็น task_state
         if depositslips.exists():

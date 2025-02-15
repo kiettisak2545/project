@@ -118,7 +118,7 @@
                                             <td>เสร็จสิ้น</td>
                                             {%endif%}
 
-                                            {% if depositslip.deposit_paidstatus == "finish" %}
+                                            {% if depositslip.deposit_paidstatus == "finish" or depositslip.deposit_paidstatus == "0" %}
                                             <td>โอนแล้ว</td>
                                             {%else%}
                                             <td>รอโอน</td>
